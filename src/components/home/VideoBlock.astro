@@ -1,9 +1,14 @@
 ---
 export interface Props {
-  youtubeId?: string;
+  videoSrc?: string;
   posterImage?: string;
+  duration?: string;
 }
-const { youtubeId = '', posterImage = '/images/video-poster.jpg' } = Astro.props;
+const {
+  videoSrc = '/images/products/0017/beadora_kz.mp4',
+  posterImage = '/images/products/0017/Gemini_Generated_Image_bvipyxbvipyxbvip.jpg',
+  duration = '',
+} = Astro.props;
 ---
 <section class="video-block">
   <div class="container">
@@ -12,32 +17,27 @@ const { youtubeId = '', posterImage = '/images/video-poster.jpg' } = Astro.props
         <span class="eyebrow">История Beadora</span>
         <h2>Как рождаются украшения</h2>
         <p class="lede">
-          Каждое изделие собирается вручную — от выбора камня в нашей мастерской в Астане до
-          финальной фотосъёмки. Мы работаем только с природными минералами и подбираем
-          сочетания, поддерживающие энергетику владельца.
+          Каждое изделие собирается вручную — от подбора камня в нашей мастерской в Астане до
+          финальной фотосъёмки. Мы работаем только с природными минералами и складываем
+          сочетания, которые поддерживают энергетику владельца.
         </p>
         <p class="italic-quote">
           «Камень помнит Землю. Мы помогаем ему говорить с человеком».
         </p>
         <div class="meta-row">
           <a href="/about" class="btn btn-secondary">Подробнее о бренде</a>
-          <span class="muted">продолжительность: 1:42</span>
+          {duration && <span class="muted">продолжительность: {duration}</span>}
         </div>
       </div>
 
       <div class="video-frame reveal">
-        <div class="video-embed" data-youtube={youtubeId}>
-          <img class="poster" src={posterImage} alt="Превью видео «История Beadora»" loading="lazy" />
+        <div class="video-embed" data-video-src={videoSrc}>
+          <img class="poster" src={posterImage} alt="Превью видео «История Beadora»" loading="lazy" width="960" height="540" />
           <button class="play" type="button" aria-label="Воспроизвести видео">
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <polygon points="6 3 21 12 6 21 6 3"/>
             </svg>
           </button>
-          {!youtubeId && (
-            <span class="placeholder-note">
-              Видео скоро появится
-            </span>
-          )}
         </div>
         <div class="frame-decoration" aria-hidden="true"></div>
       </div>
@@ -139,19 +139,6 @@ const { youtubeId = '', posterImage = '/images/video-poster.jpg' } = Astro.props
     margin-left: 4px;
   }
 
-  .placeholder-note {
-    position: absolute;
-    bottom: 1rem;
-    left: 1rem;
-    padding: 0.375rem 0.75rem;
-    border-radius: 6px;
-    background: rgba(0, 0, 0, 0.5);
-    color: #fff;
-    font-size: 0.75rem;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }
-
   .frame-decoration {
     position: absolute;
     top: -20px;
@@ -167,17 +154,18 @@ const { youtubeId = '', posterImage = '/images/video-poster.jpg' } = Astro.props
 
 <script>
   function init() {
-    document.querySelectorAll<HTMLElement>('[data-youtube]').forEach((embed) => {
-      const id = embed.dataset.youtube;
-      if (!id) return;
+    document.querySelectorAll<HTMLElement>('[data-video-src]').forEach((embed) => {
+      const src = embed.dataset.videoSrc;
+      if (!src) return;
       embed.addEventListener('click', () => {
-        const iframe = document.createElement('iframe');
-        iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`;
-        iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
-        iframe.setAttribute('allowfullscreen', '');
-        iframe.style.cssText = 'width:100%;height:100%;border:0;position:absolute;inset:0;';
+        const video = document.createElement('video');
+        video.src = src;
+        video.setAttribute('controls', '');
+        video.setAttribute('autoplay', '');
+        video.setAttribute('playsinline', '');
+        video.style.cssText = 'width:100%;height:100%;object-fit:cover;position:absolute;inset:0;border:0;background:#000;';
         embed.innerHTML = '';
-        embed.appendChild(iframe);
+        embed.appendChild(video);
       });
     });
   }

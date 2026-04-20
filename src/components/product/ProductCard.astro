@@ -13,6 +13,11 @@ const altText = `${product.categoryTitle} «${product.name}» — ${stoneTitles(
 <article class="product-card card" data-sku={product.sku}>
   <a href={href} class="media" aria-label={`${product.categoryTitle} «${product.name}»`}>
     {product.new && <span class="ribbon">Новинка</span>}
+    {product.videos && product.videos.length > 0 && (
+      <span class="video-flag" aria-label="Есть видео">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="6 3 21 12 6 21 6 3"/></svg>
+      </span>
+    )}
     <img src={img} alt={altText} loading="lazy" width="400" height="400" />
   </a>
   <div class="body">
@@ -88,6 +93,26 @@ const altText = `${product.categoryTitle} «${product.name}» — ${stoneTitles(
     text-transform: uppercase;
     border-radius: 4px;
     z-index: 2;
+  }
+  .video-flag {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    backdrop-filter: blur(8px);
+    z-index: 2;
+  }
+  .video-flag svg {
+    width: 14px;
+    height: 14px;
+    margin-left: 2px;
   }
   .body {
     padding: 1rem 1.125rem 1.125rem;

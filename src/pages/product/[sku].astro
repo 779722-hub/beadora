@@ -83,7 +83,7 @@ const breadcrumb = breadcrumbListJsonLd(
               height="600"
             />
           </div>
-          {product.images.length > 1 && (
+          {(product.images.length > 1 || (product.videos && product.videos.length > 0)) && (
             <div class="thumbs">
               {product.images.map((src, i) => (
                 <button type="button" class="thumb" data-src={src} aria-label={`Показать фото ${i + 1}`}>
@@ -94,6 +94,20 @@ const breadcrumb = breadcrumbListJsonLd(
                     width="80"
                     height="80"
                   />
+                </button>
+              ))}
+              {(product.videos ?? []).map((vsrc, i) => (
+                <button type="button" class="thumb thumb-video" data-video={vsrc} aria-label={`Воспроизвести видео ${i + 1}`}>
+                  <img
+                    src={product.images[0]}
+                    alt={`Видео товара ${product.name}`}
+                    loading="lazy"
+                    width="80"
+                    height="80"
+                  />
+                  <span class="video-badge" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6 3 21 12 6 21 6 3"/></svg>
+                  </span>
                 </button>
               ))}
             </div>
@@ -275,6 +289,30 @@ const breadcrumb = breadcrumbListJsonLd(
     height: 100%;
     object-fit: cover;
   }
+  .thumb-video {
+    position: relative;
+  }
+  .video-badge {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--accent-contrast);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+  }
+  .video-badge svg {
+    width: 12px;
+    height: 12px;
+    margin-left: 2px;
+  }
 
   .details {
     display: flex;
@@ -440,9 +478,29 @@ const breadcrumb = breadcrumbListJsonLd(
 
   function init() {
     const main = document.getElementById('galleryMain') as HTMLImageElement | null;
+    const mainContainer = main?.parentElement as HTMLElement | null;
+    const originalImage = main ? main.outerHTML : '';
+
+    function restoreImage(src?: string) {
+      if (!mainContainer || !main) return;
+      if (!main.isConnected) {
+        // main was replaced by video — restore from original HTML
+        mainContainer.innerHTML = originalImage;
+      }
+      const el = document.getElementById('galleryMain') as HTMLImageElement | null;
+      if (el && src) el.src = src;
+    }
+
     document.querySelectorAll<HTMLElement>('.thumb').forEach((btn) => {
       btn.addEventListener('click', () => {
-        if (main && btn.dataset.src) main.src = btn.dataset.src;
+        if (btn.dataset.video && mainContainer) {
+          mainContainer.innerHTML = `
+            <video src="${btn.dataset.video}" controls autoplay playsinline
+              style="width:100%;height:100%;object-fit:cover;background:#000;border-radius:inherit;"></video>
+          `;
+        } else if (btn.dataset.src) {
+          restoreImage(btn.dataset.src);
+        }
       });
     });
 

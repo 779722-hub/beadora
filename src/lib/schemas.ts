@@ -20,6 +20,7 @@ export const ProductSchema = z.object({
   new: z.boolean().default(false),
   featured: z.boolean().default(false),
   images: z.array(z.string()).min(1),
+  videos: z.array(z.string()).optional(),
   description: z.string().default(''),
   care: z.string().default(''),
   length_cm: z.number().optional(),

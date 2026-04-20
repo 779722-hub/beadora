@@ -12,22 +12,26 @@ const IMG_ROOT = join(ROOT, 'public', 'images', 'products');
 const PRODUCTS_JSON = join(ROOT, 'src', 'data', 'products.json');
 const PLACEHOLDER = '/images/product-placeholder.svg';
 
-const EXT_ALLOWED = new Set(['.jpg', '.jpeg', '.png', '.webp', '.avif']);
+const IMAGE_EXT = new Set(['.jpg', '.jpeg', '.png', '.webp', '.avif']);
+const VIDEO_EXT = new Set(['.mp4', '.webm', '.mov']);
 
-async function listImages(sku) {
+async function listMedia(sku) {
   const dir = join(IMG_ROOT, sku);
   let entries;
   try {
     entries = await readdir(dir, { withFileTypes: true });
   } catch {
-    return [];
+    return { images: [], videos: [] };
   }
   const files = entries
     .filter((e) => e.isFile())
     .map((e) => e.name)
-    .filter((n) => EXT_ALLOWED.has('.' + n.split('.').pop().toLowerCase()))
     .sort((a, b) => a.localeCompare(b, 'ru', { numeric: true }));
-  return files.map((f) => `/images/products/${sku}/${f}`);
+  const ext = (n) => '.' + n.split('.').pop().toLowerCase();
+  return {
+    images: files.filter((f) => IMAGE_EXT.has(ext(f))).map((f) => `/images/products/${sku}/${f}`),
+    videos: files.filter((f) => VIDEO_EXT.has(ext(f))).map((f) => `/images/products/${sku}/${f}`),
+  };
 }
 
 async function main() {
@@ -35,19 +39,28 @@ async function main() {
 
   let filled = 0;
   let empty = 0;
+  let withVideos = 0;
   for (const p of products) {
-    const found = await listImages(p.sku);
-    if (found.length > 0) {
-      p.images = found;
+    const { images, videos } = await listMedia(p.sku);
+    if (images.length > 0) {
+      p.images = images;
       filled++;
     } else {
       p.images = [PLACEHOLDER];
       empty++;
     }
+    if (videos.length > 0) {
+      p.videos = videos;
+      withVideos++;
+    } else {
+      delete p.videos;
+    }
   }
 
   await writeFile(PRODUCTS_JSON, JSON.stringify(products, null, 2), 'utf-8');
-  console.log(`sync-product-images: ${filled} SKUs with photos, ${empty} empty (placeholder)`);
+  console.log(
+    `sync-product-images: ${filled} SKUs with photos, ${empty} empty (placeholder), ${withVideos} with videos`
+  );
 }
 
 main().catch((e) => {
