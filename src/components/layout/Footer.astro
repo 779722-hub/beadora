@@ -4,7 +4,10 @@ const year = new Date().getFullYear();
 <footer class="site-footer">
   <div class="container footer-inner">
     <div class="col brand">
-      <a href="/" class="logo">BEADORA<span class="dot">.kz</span></a>
+      <a href="/" class="logo" aria-label="Beadora.kz — на главную">
+        <img class="logo-light" src="/images/logo-full.png" alt="Beadora.kz" width="160" height="135" loading="lazy" />
+        <img class="logo-dark" src="/images/logo-full-dark.png" alt="Beadora.kz" width="160" height="135" loading="lazy" />
+      </a>
       <p class="muted">
         Авторские украшения из натуральных камней в Казахстане. Ручная работа, подбор по зодиаку, доставка по Астане и всему Казахстану.
       </p>
@@ -86,15 +89,16 @@ const year = new Date().getFullYear();
   }
 
   .logo {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.5rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    color: var(--text);
+    display: inline-block;
   }
-  .logo .dot {
-    color: var(--accent);
-    font-weight: 400;
+  .logo img {
+    height: 96px;
+    width: auto;
+    display: block;
+  }
+  :root[data-theme='light'] .logo .logo-dark,
+  :root[data-theme='dark'] .logo .logo-light {
+    display: none;
   }
 
   .brand p {
