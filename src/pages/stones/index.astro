@@ -1,6 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { STONES } from '../../lib/data';
+import { STONES, propertyLabel } from '../../lib/data';
 ---
 <Base
   title="Камни и их свойства — Beadora.kz"
@@ -28,7 +28,7 @@ import { STONES } from '../../lib/data';
             <h3>{s.title}</h3>
             <p class="short">{s.short}</p>
             <p class="props">
-              {s.properties.slice(0, 3).map((p) => <span class="chip">{p}</span>)}
+              {s.properties.slice(0, 3).map((p) => <span class="chip">{propertyLabel(p)}</span>)}
             </p>
           </a>
         ))}

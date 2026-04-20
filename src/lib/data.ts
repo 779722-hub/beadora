@@ -74,3 +74,24 @@ export function stoneTitles(stoneSlugs: string[]): string {
     .map((s) => stoneBySlug(s)?.title ?? s)
     .join(', ');
 }
+
+const PROPERTY_LABELS_RU: Record<string, string> = {
+  harmony: 'Гармония',
+  protection: 'Защита',
+  wisdom: 'Мудрость',
+  luck: 'Удача',
+  joy: 'Радость',
+  wealth: 'Достаток',
+  love: 'Любовь',
+  tenderness: 'Нежность',
+  courage: 'Смелость',
+  focus: 'Концентрация',
+  grounding: 'Заземление',
+  balance: 'Баланс',
+  intuition: 'Интуиция',
+  truth: 'Истина',
+};
+
+export function propertyLabel(key: string): string {
+  return PROPERTY_LABELS_RU[key] ?? key;
+}
