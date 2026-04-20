@@ -1,0 +1,310 @@
+---
+import Base from '../../layouts/Base.astro';
+import ProductCard from '../../components/product/ProductCard.astro';
+import CatalogFilters from '../../components/product/CatalogFilters.astro';
+import { PRODUCTS } from '../../lib/data';
+---
+<Base
+  title="Каталог украшений Beadora.kz"
+  description="Браслеты, серьги, ожерелья и комплекты из натуральных камней. Фильтры по категории, камню, знаку зодиака и цене."
+>
+  <section class="catalog-hero">
+    <div class="container">
+      <h1>Каталог</h1>
+      <p class="lede">
+        Браслеты, серьги, ожерелья и комплекты. Подберите аксессуар, который подходит вам
+        по стилю, энергии и свойствам минералов.
+      </p>
+    </div>
+  </section>
+
+  <section class="catalog-body">
+    <div class="container">
+      <div class="layout">
+        <CatalogFilters />
+
+        <div class="content">
+          <div class="toolbar">
+            <span class="count" id="resultCount">{PRODUCTS.length} изделий</span>
+            <label class="sort">
+              Сортировка:
+              <select id="sortSelect">
+                <option value="featured">Популярные</option>
+                <option value="new">Новые</option>
+                <option value="price-asc">Цена ↑</option>
+                <option value="price-desc">Цена ↓</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="grid" id="catalogGrid">
+            {PRODUCTS.map((p) => (
+              <div
+                class="cell"
+                data-sku={p.sku}
+                data-category={p.category}
+                data-price={p.price}
+                data-stones={p.stones.join(',')}
+                data-zodiac={p.zodiac.join(',')}
+                data-new={p.new ? 'true' : 'false'}
+                data-available={p.available ? 'true' : 'false'}
+                data-featured={p.featured ? 'true' : 'false'}
+              >
+                <ProductCard product={p} />
+              </div>
+            ))}
+          </div>
+
+          <div class="empty" id="catalogEmpty" hidden>
+            <p>Ничего не найдено. Попробуйте изменить фильтры.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .catalog-hero {
+    padding: 3rem 0 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .catalog-hero h1 {
+    margin-bottom: 0.5rem;
+  }
+  .lede {
+    max-width: 60ch;
+    color: var(--text-muted);
+    font-size: 1.0625rem;
+    margin: 0;
+  }
+
+  .catalog-body {
+    padding: 2rem 0 4rem;
+  }
+  .layout {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+  @media (max-width: 900px) {
+    .layout {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .count {
+    color: var(--text-muted);
+  }
+  .sort {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+  }
+  .sort select {
+    padding: 0.4rem 0.75rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font: inherit;
+    font-size: 0.875rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .empty {
+    padding: 3rem 1rem;
+    text-align: center;
+    color: var(--text-muted);
+    border: 1px dashed var(--border);
+    border-radius: 16px;
+  }
+</style>
+
+<script>
+  interface CellData {
+    sku: string;
+    category: string;
+    price: number;
+    stones: string[];
+    zodiac: string[];
+    isNew: boolean;
+    available: boolean;
+    featured: boolean;
+    element: HTMLElement;
+  }
+
+  function readCells(): CellData[] {
+    return Array.from(document.querySelectorAll<HTMLElement>('#catalogGrid .cell')).map((el) => ({
+      sku: el.dataset.sku!,
+      category: el.dataset.category!,
+      price: Number(el.dataset.price),
+      stones: (el.dataset.stones ?? '').split(',').filter(Boolean),
+      zodiac: (el.dataset.zodiac ?? '').split(',').filter(Boolean),
+      isNew: el.dataset.new === 'true',
+      available: el.dataset.available === 'true',
+      featured: el.dataset.featured === 'true',
+      element: el,
+    }));
+  }
+
+  function selectedValues(filter: string): string[] {
+    return Array.from(
+      document.querySelectorAll<HTMLInputElement>(`input[data-filter="${filter}"]:checked`)
+    ).map((i) => i.value);
+  }
+
+  function getValue(filter: string): string | undefined {
+    const el = document.querySelector<HTMLInputElement>(`input[data-filter="${filter}"]`);
+    return el?.value || undefined;
+  }
+
+  function applyFilters() {
+    const cells = readCells();
+    const categories = selectedValues('category');
+    const stones = selectedValues('stone');
+    const zodiac = selectedValues('zodiac');
+    const onlyNew = selectedValues('new').length > 0;
+    const onlyAvailable = selectedValues('available').length > 0;
+    const priceMin = Number(getValue('price-min') ?? 0) || 0;
+    const priceMax = Number(getValue('price-max') ?? 0) || Infinity;
+
+    let visible = 0;
+    for (const c of cells) {
+      let show = true;
+      if (categories.length > 0 && !categories.includes(c.category)) show = false;
+      if (stones.length > 0 && !stones.some((s) => c.stones.includes(s))) show = false;
+      if (zodiac.length > 0 && !zodiac.some((z) => c.zodiac.includes(z))) show = false;
+      if (onlyNew && !c.isNew) show = false;
+      if (onlyAvailable && !c.available) show = false;
+      if (c.price < priceMin || c.price > priceMax) show = false;
+
+      c.element.style.display = show ? '' : 'none';
+      if (show) visible++;
+    }
+
+    const countEl = document.getElementById('resultCount');
+    if (countEl) countEl.textContent = `${visible} из ${cells.length} изделий`;
+
+    const emptyEl = document.getElementById('catalogEmpty');
+    if (emptyEl) {
+      if (visible === 0) {
+        emptyEl.removeAttribute('hidden');
+      } else {
+        emptyEl.setAttribute('hidden', '');
+      }
+    }
+
+    syncUrl();
+  }
+
+  function sortGrid(mode: string) {
+    const grid = document.getElementById('catalogGrid');
+    if (!grid) return;
+    const cells = readCells();
+    cells.sort((a, b) => {
+      if (mode === 'price-asc') return a.price - b.price;
+      if (mode === 'price-desc') return b.price - a.price;
+      if (mode === 'new') return Number(b.isNew) - Number(a.isNew);
+      return Number(b.featured) - Number(a.featured);
+    });
+    cells.forEach((c) => grid.appendChild(c.element));
+  }
+
+  function syncUrl() {
+    const params = new URLSearchParams();
+    const categories = selectedValues('category');
+    const stones = selectedValues('stone');
+    const zodiac = selectedValues('zodiac');
+    const priceMin = getValue('price-min');
+    const priceMax = getValue('price-max');
+    if (categories.length) params.set('cat', categories.join(','));
+    if (stones.length) params.set('stone', stones.join(','));
+    if (zodiac.length) params.set('zodiac', zodiac.join(','));
+    if (priceMin) params.set('pmin', priceMin);
+    if (priceMax) params.set('pmax', priceMax);
+    if (selectedValues('new').length) params.set('new', '1');
+
+    const url = params.toString() ? `?${params}` : location.pathname;
+    history.replaceState(null, '', url);
+  }
+
+  function restoreFromUrl() {
+    const params = new URLSearchParams(location.search);
+    const setChecked = (filter: string, values: string[]) => {
+      document.querySelectorAll<HTMLInputElement>(`input[data-filter="${filter}"]`).forEach((i) => {
+        i.checked = values.includes(i.value);
+      });
+    };
+    const cat = params.get('cat');
+    if (cat) setChecked('category', cat.split(','));
+    const stone = params.get('stone');
+    if (stone) setChecked('stone', stone.split(','));
+    const zodiac = params.get('zodiac');
+    if (zodiac) setChecked('zodiac', zodiac.split(','));
+    const pmin = params.get('pmin');
+    if (pmin) {
+      const el = document.querySelector<HTMLInputElement>('input[data-filter="price-min"]');
+      if (el) el.value = pmin;
+    }
+    const pmax = params.get('pmax');
+    if (pmax) {
+      const el = document.querySelector<HTMLInputElement>('input[data-filter="price-max"]');
+      if (el) el.value = pmax;
+    }
+    if (params.get('new')) {
+      const el = document.querySelector<HTMLInputElement>('input[data-filter="new"]');
+      if (el) el.checked = true;
+    }
+    const sort = params.get('sort');
+    if (sort) {
+      const sel = document.getElementById('sortSelect') as HTMLSelectElement | null;
+      if (sel) sel.value = sort;
+    }
+  }
+
+  function init() {
+    restoreFromUrl();
+    document.querySelectorAll<HTMLInputElement>('input[data-filter]').forEach((el) => {
+      el.addEventListener('change', applyFilters);
+      el.addEventListener('input', applyFilters);
+    });
+    const sortSel = document.getElementById('sortSelect') as HTMLSelectElement | null;
+    if (sortSel) {
+      sortSel.addEventListener('change', () => sortGrid(sortSel.value));
+      sortGrid(sortSel.value);
+    }
+    const reset = document.getElementById('filtersReset');
+    reset?.addEventListener('click', () => {
+      document.querySelectorAll<HTMLInputElement>('input[data-filter]').forEach((i) => {
+        if (i.type === 'checkbox') i.checked = i.value === 'true' && i.dataset.filter === 'available';
+        else i.value = '';
+      });
+      applyFilters();
+    });
+    applyFilters();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+</script>

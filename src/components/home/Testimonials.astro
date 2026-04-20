@@ -1,0 +1,100 @@
+---
+const testimonials = [
+  {
+    name: 'Алия',
+    zodiac: 'Водолей',
+    initials: 'А',
+    color: '#6b4d8f',
+    text: 'Долго искала браслет с аметистом — и нашла здесь. Камень крупный, работа аккуратная, а главное — ощущение спокойствия, когда надеваю.',
+  },
+  {
+    name: 'Жанна',
+    zodiac: 'Лев',
+    initials: 'Ж',
+    color: '#e8b94a',
+    text: 'Взяла цитрин в подарок коллеге, а потом купила себе «Мандариновый свет». Настроение реально поднимается. И прекрасно сидит на запястье.',
+  },
+  {
+    name: 'Мадина',
+    zodiac: 'Рак',
+    initials: 'М',
+    color: '#d8d4cc',
+    text: 'Серьги с лунным камнем — то, что я давно искала. Переливы как живые. Упаковка отдельное удовольствие: все камни в своих мешочках с описанием.',
+  },
+];
+---
+<section class="testimonials">
+  <div class="container">
+    <div class="grid">
+      {testimonials.map((t) => (
+        <div class="card reveal">
+          <div class="stars" aria-label="5 из 5">★★★★★</div>
+          <p>«{t.text}»</p>
+          <div class="author">
+            <span class="avatar" style={`--avatar-color: ${t.color}`}>{t.initials}</span>
+            <div>
+              <strong>{t.name}</strong>
+              <span class="muted">{t.zodiac}</span>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
+  }
+  .card {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .stars {
+    color: var(--accent);
+    font-size: 1.125rem;
+    letter-spacing: 0.1em;
+  }
+  .card p {
+    margin: 0;
+    color: var(--text);
+    font-size: 1rem;
+    line-height: 1.65;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-style: italic;
+    font-size: 1.25rem;
+  }
+  .author {
+    display: flex;
+    gap: 0.875rem;
+    align-items: center;
+    margin-top: auto;
+  }
+  .avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    background: var(--avatar-color);
+    color: #1a1a1a;
+    font-weight: 700;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    border: 2px solid var(--border);
+  }
+  .author strong {
+    display: block;
+    font-family: 'Manrope', sans-serif;
+    color: var(--text);
+  }
+  .author .muted {
+    font-size: 0.875rem;
+  }
+</style>

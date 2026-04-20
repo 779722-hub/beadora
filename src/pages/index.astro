@@ -1,0 +1,125 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/home/Hero.astro';
+import TrustBar from '../components/home/TrustBar.astro';
+import VideoBlock from '../components/home/VideoBlock.astro';
+import SectionHeader from '../components/home/SectionHeader.astro';
+import ProductSlider from '../components/home/ProductSlider.astro';
+import QuizPromo from '../components/home/QuizPromo.astro';
+import CategoriesGrid from '../components/home/CategoriesGrid.astro';
+import StonePower from '../components/home/StonePower.astro';
+import AboutShort from '../components/home/AboutShort.astro';
+import Lookbook from '../components/home/Lookbook.astro';
+import Testimonials from '../components/home/Testimonials.astro';
+import InstagramStrip from '../components/home/InstagramStrip.astro';
+import FaqBlock from '../components/home/FaqBlock.astro';
+import NewsletterCta from '../components/home/NewsletterCta.astro';
+import ContactsBlock from '../components/home/ContactsBlock.astro';
+import { featuredProducts, newArrivals } from '../lib/data';
+
+const newArrivalsList = newArrivals(8);
+const featured = featuredProducts(8);
+---
+<Base
+  title="Beadora.kz — украшения из натуральных камней в Астане"
+  description="Авторские браслеты, серьги и ожерелья из натуральных камней (аметист, цитрин, лазурит и др.). Подбор по знаку зодиака. Ручная работа в Астане."
+>
+  <Hero />
+  <TrustBar />
+  <VideoBlock />
+
+  <section>
+    <div class="container">
+      <SectionHeader
+        eyebrow="Только что пришли"
+        title="Новинки аксессуаров"
+        lede="Свежие работы с кристаллами Aurora Borealis, цитрином и жемчугом"
+        link={{ href: '/catalog?sort=new', label: 'Смотреть все новинки' }}
+      />
+      <ProductSlider products={newArrivalsList.length > 0 ? newArrivalsList : featured} />
+    </div>
+  </section>
+
+  <section style="background: var(--surface);">
+    <div class="container">
+      <SectionHeader
+        eyebrow="Быстрый подбор"
+        title="Найдите свой камень"
+        lede="Три коротких способа найти украшение, которое подойдёт именно вам"
+        align="center"
+      />
+      <QuizPromo />
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <SectionHeader
+        eyebrow="Каталог"
+        title="Изделия по категориям"
+      />
+    </div>
+    <CategoriesGrid />
+  </section>
+
+  <section style="background: var(--surface);">
+    <div class="container">
+      <SectionHeader
+        eyebrow="Сила камня"
+        title="Что скажет ваш минерал"
+        lede="Шесть камней-героев и их энергия. Нажмите, чтобы изучить подробнее."
+      />
+      <StonePower />
+    </div>
+  </section>
+
+  <AboutShort />
+
+  <section>
+    <div class="container">
+      <SectionHeader
+        eyebrow="Лукбук"
+        title="Украшения в жизни"
+        lede="Наши работы на моделях и в повседневности"
+      />
+      <Lookbook />
+    </div>
+  </section>
+
+  <section style="background: var(--surface);">
+    <div class="container">
+      <SectionHeader
+        eyebrow="Отзывы"
+        title="Что говорят владелицы"
+        align="center"
+      />
+      <Testimonials />
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <SectionHeader
+        eyebrow="Instagram"
+        title="@beadora.kz"
+        lede="Свежие фото и обзоры коллекций"
+      />
+      <InstagramStrip />
+    </div>
+  </section>
+
+  <section style="background: var(--surface);">
+    <div class="container">
+      <SectionHeader
+        eyebrow="FAQ"
+        title="Часто задаваемые вопросы"
+        align="center"
+      />
+      <FaqBlock />
+    </div>
+  </section>
+
+  <NewsletterCta />
+
+  <ContactsBlock />
+</Base>

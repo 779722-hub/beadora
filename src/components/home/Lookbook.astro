@@ -1,0 +1,54 @@
+---
+const images = [
+  { src: '/images/lookbook/01.jpg', alt: 'Фиолетовый браслет на модели' },
+  { src: '/images/lookbook/02.jpg', alt: 'Серьги и ожерелье с жемчугом' },
+  { src: '/images/lookbook/03.jpg', alt: 'Украшения на тёмном фоне' },
+  { src: '/images/lookbook/04.jpg', alt: 'Ожерелье крупным планом' },
+  { src: '/images/lookbook/05.jpg', alt: 'Мастерская Beadora' },
+  { src: '/images/lookbook/06.jpg', alt: 'Браслеты на деревянной поверхности' },
+  { src: '/images/lookbook/07.jpg', alt: 'Казахская модель в браслете' },
+  { src: '/images/lookbook/08.jpg', alt: 'Разноцветные браслеты' },
+  { src: '/images/lookbook/09.jpg', alt: 'Серьги крупным планом' },
+];
+---
+<section class="lookbook">
+  <div class="container">
+    <div class="masonry">
+      {images.map((img, i) => (
+        <figure class={`item span-${(i % 5) + 1}`}>
+          <img src={img.src} alt={img.alt} loading="lazy" />
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .masonry {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-auto-flow: dense;
+    gap: 1rem;
+  }
+  .item {
+    margin: 0;
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    transition: transform 0.3s ease;
+  }
+  .item:hover {
+    transform: scale(1.02);
+  }
+  .item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    aspect-ratio: 4 / 5;
+    transition: transform 0.5s ease;
+  }
+  .span-2 img { aspect-ratio: 4 / 6; }
+  .span-3 img { aspect-ratio: 1 / 1; }
+  .span-5 img { aspect-ratio: 3 / 4; }
+</style>

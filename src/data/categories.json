@@ -1,0 +1,30 @@
+[
+  {
+    "slug": "bracelets",
+    "title": "Браслеты",
+    "titlePlural": "Браслеты",
+    "description": "Авторские браслеты из натуральных камней — аметист, агат, лазурит, цитрин. Ручная работа.",
+    "image": "/images/category-bracelets.jpg"
+  },
+  {
+    "slug": "necklaces",
+    "title": "Ожерелья и колье",
+    "titlePlural": "Ожерелья",
+    "description": "Изящные ожерелья с природными камнями для вечера и повседневности.",
+    "image": "/images/category-necklaces.jpg"
+  },
+  {
+    "slug": "earrings",
+    "title": "Серьги",
+    "titlePlural": "Серьги",
+    "description": "Серьги с натуральными кристаллами и жемчугом.",
+    "image": "/images/category-earrings.jpg"
+  },
+  {
+    "slug": "sets",
+    "title": "Комплекты",
+    "titlePlural": "Комплекты",
+    "description": "Готовые комплекты: браслет + серьги в одной энергетике.",
+    "image": "/images/category-sets.jpg"
+  }
+]

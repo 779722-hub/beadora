@@ -1,0 +1,276 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+
+const nav = [
+  { href: '/catalog', label: 'Каталог' },
+  { href: '/stones', label: 'Камни' },
+  { href: '/quiz', label: 'Подбор' },
+  { href: '/about', label: 'О бренде' },
+  { href: '/contacts', label: 'Контакты' },
+];
+---
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="logo" aria-label="Beadora.kz — на главную">
+      <span class="logo-mark" aria-hidden="true">B</span>
+      <span class="logo-text">BEADORA<span class="logo-kz">.kz</span></span>
+    </a>
+
+    <nav class="primary-nav" aria-label="Главное меню">
+      {nav.map((item) => (
+        <a href={item.href}>{item.label}</a>
+      ))}
+    </nav>
+
+    <div class="actions">
+      <ThemeToggle />
+      <a href="/favorites" class="icon-btn" aria-label="Избранное">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+        </svg>
+        <span class="badge" data-favorites-count>0</span>
+      </a>
+      <a href="/cart" class="icon-btn" aria-label="Корзина">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        <span class="badge" data-cart-count>0</span>
+      </a>
+      <button class="mobile-toggle" id="mobileNavToggle" aria-label="Меню" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <nav class="mobile-nav" id="mobileNav" aria-label="Мобильное меню" hidden>
+    {nav.map((item) => (
+      <a href={item.href}>{item.label}</a>
+    ))}
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: color-mix(in srgb, var(--bg) 85%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    transition: background-color 0.4s ease, border-color 0.4s ease;
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-top: 0.875rem;
+    padding-bottom: 0.875rem;
+  }
+
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    color: var(--text);
+    text-decoration: none;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+  }
+  .logo-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: var(--accent);
+    color: var(--accent-contrast);
+    font-size: 1.5rem;
+    font-weight: 900;
+    font-family: 'Playfair Display', serif;
+    line-height: 1;
+  }
+  .logo-text {
+    font-size: 1.25rem;
+    letter-spacing: 0.08em;
+  }
+  .logo-kz {
+    color: var(--accent);
+    font-weight: 400;
+    font-size: 0.875em;
+  }
+
+  .primary-nav {
+    display: flex;
+    gap: 1.75rem;
+  }
+  .primary-nav a {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: color 0.2s ease;
+    position: relative;
+  }
+  .primary-nav a:hover {
+    color: var(--accent);
+  }
+  .primary-nav a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -4px;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.2s ease;
+  }
+  .primary-nav a:hover::after {
+    transform: scaleX(1);
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .icon-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    color: var(--text-muted);
+    border-radius: 8px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  .icon-btn:hover {
+    background: var(--surface);
+    color: var(--accent);
+  }
+  .icon-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+  .badge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    background: var(--accent);
+    color: var(--accent-contrast);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    font-family: 'Manrope', sans-serif;
+    line-height: 16px;
+    text-align: center;
+    border-radius: 999px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  .badge[data-count]:not([data-count='0']) {
+    opacity: 1;
+  }
+
+  .mobile-toggle {
+    display: none;
+    width: 40px;
+    height: 40px;
+    color: var(--text-muted);
+    border-radius: 8px;
+  }
+  .mobile-toggle svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .mobile-nav[hidden] {
+    display: none;
+  }
+  .mobile-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1rem 1.5rem 1.5rem;
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .mobile-nav a {
+    padding: 0.75rem 0;
+    color: var(--text);
+    font-size: 1.125rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  @media (max-width: 900px) {
+    .primary-nav {
+      display: none;
+    }
+    .mobile-toggle {
+      display: inline-flex;
+    }
+  }
+</style>
+
+<script>
+  import { readCart, cartCount } from '../../lib/cart';
+  import { readFavorites } from '../../lib/favorites';
+
+  function setBadge(selector: string, value: number) {
+    document.querySelectorAll<HTMLElement>(selector).forEach((el) => {
+      el.textContent = String(value);
+      el.dataset.count = String(value);
+    });
+  }
+
+  function refreshCart() {
+    setBadge('[data-cart-count]', cartCount(readCart()));
+  }
+  function refreshFavorites() {
+    setBadge('[data-favorites-count]', readFavorites().length);
+  }
+
+  function initMobile() {
+    const btn = document.getElementById('mobileNavToggle');
+    const nav = document.getElementById('mobileNav');
+    if (!btn || !nav) return;
+    btn.addEventListener('click', () => {
+      const open = nav.hasAttribute('hidden');
+      if (open) {
+        nav.removeAttribute('hidden');
+        btn.setAttribute('aria-expanded', 'true');
+      } else {
+        nav.setAttribute('hidden', '');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+  function init() {
+    refreshCart();
+    refreshFavorites();
+    window.addEventListener('cart:change', refreshCart);
+    window.addEventListener('favorites:change', refreshFavorites);
+    initMobile();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+</script>

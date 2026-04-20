@@ -1,0 +1,78 @@
+---
+export interface Props {
+  eyebrow?: string;
+  title: string;
+  lede?: string;
+  link?: { href: string; label: string };
+  align?: 'left' | 'center';
+}
+const { eyebrow, title, lede, link, align = 'left' } = Astro.props;
+---
+<header class={`section-header align-${align}`}>
+  <div class="text">
+    {eyebrow && <span class="eyebrow">{eyebrow}</span>}
+    <h2>{title}</h2>
+    {lede && <p class="lede">{lede}</p>}
+  </div>
+  {link && (
+    <a href={link.href} class="link">
+      {link.label}
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="5" y1="12" x2="19" y2="12"/>
+        <polyline points="12 5 19 12 12 19"/>
+      </svg>
+    </a>
+  )}
+</header>
+
+<style>
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+  }
+  .section-header.align-center {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .text {
+    max-width: 50ch;
+  }
+  .eyebrow {
+    display: inline-block;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+  }
+  h2 {
+    margin: 0 0 0.5rem;
+  }
+  .lede {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 1rem;
+  }
+  .link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--accent);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .link svg {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.2s ease;
+  }
+  .link:hover svg {
+    transform: translateX(4px);
+  }
+</style>

@@ -1,0 +1,188 @@
+---
+import Base from '../../../layouts/Base.astro';
+import ProductCard from '../../../components/product/ProductCard.astro';
+import { ZODIAC, STONES, productsByZodiac, stoneBySlug } from '../../../lib/data';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths: GetStaticPaths = () => {
+  return ZODIAC.map((z) => ({
+    params: { sign: z.slug },
+    props: { sign: z },
+  }));
+};
+
+const { sign } = Astro.props;
+const products = productsByZodiac(sign.slug);
+const recommendedStones = sign.recommended_stones.map((s) => stoneBySlug(s)).filter(Boolean);
+---
+<Base
+  title={`Украшения для знака ${sign.title} — Beadora.kz`}
+  description={`Подборка украшений из натуральных камней для знака ${sign.title} (${sign.dates}). Камни-талисманы, свойства, рекомендации.`}
+>
+  <section class="zodiac-hero">
+    <div class="container">
+      <nav class="crumbs">
+        <a href="/">Главная</a> / <a href="/catalog">Каталог</a> / <span>{sign.title}</span>
+      </nav>
+      <div class="layout">
+        <div class="sign-block">
+          <span class="symbol" style={`--element-color: var(--accent)`}>{sign.symbol}</span>
+          <div class="element">{sign.element === 'fire' ? 'Огонь' : sign.element === 'earth' ? 'Земля' : sign.element === 'air' ? 'Воздух' : 'Вода'}</div>
+        </div>
+        <div class="info">
+          <h1>{sign.title}</h1>
+          <p class="dates">{sign.dates}</p>
+          <p class="lede">{sign.description}</p>
+          <div class="traits">
+            {sign.traits.map((t) => <span class="chip">{t}</span>)}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {recommendedStones.length > 0 && (
+    <section class="recommended-stones">
+      <div class="container">
+        <h2>Камни-талисманы {sign.title.toLowerCase()}а</h2>
+        <div class="stones-grid">
+          {recommendedStones.map((s) => s && (
+            <a href={`/stones/${s.slug}`} class="stone-tile">
+              <span class="sw" style={`background:${s.color}`}></span>
+              <div>
+                <strong>{s.title}</strong>
+                <span class="muted">{s.short}</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section>
+    <div class="container">
+      <h2>{products.length > 0 ? `Украшения для ${sign.title.toLowerCase()}а` : `Пока нет украшений, привязанных к ${sign.title.toLowerCase()}у`}</h2>
+      {products.length > 0 ? (
+        <div class="grid">
+          {products.map((p) => <ProductCard product={p} />)}
+        </div>
+      ) : (
+        <p class="muted">
+          Напишите нам — подберём украшение с рекомендованными выше камнями под ваш стиль.
+        </p>
+      )}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .zodiac-hero {
+    padding: 2.5rem 0 3rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .crumbs {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+  }
+  .crumbs a {
+    color: var(--text-muted);
+  }
+  .layout {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 2.5rem;
+    align-items: center;
+  }
+  @media (max-width: 720px) {
+    .layout {
+      grid-template-columns: 1fr;
+    }
+  }
+  .sign-block {
+    text-align: center;
+  }
+  .symbol {
+    display: block;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(6rem, 14vw, 10rem);
+    line-height: 1;
+    color: var(--accent);
+    text-shadow: 0 0 40px rgba(212, 175, 55, 0.2);
+  }
+  .element {
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+  }
+  h1 {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 3rem);
+  }
+  .dates {
+    color: var(--accent);
+    font-weight: 600;
+    margin: 0.25rem 0 1rem;
+  }
+  .lede {
+    color: var(--text-muted);
+    font-size: 1.0625rem;
+    margin-bottom: 1rem;
+  }
+  .traits {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .recommended-stones {
+    background: var(--surface);
+  }
+  h2 {
+    margin: 0 0 1.5rem;
+  }
+  .stones-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+  }
+  .stone-tile {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem 1.25rem;
+    border-radius: 14px;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    color: var(--text);
+    text-decoration: none;
+    transition: border-color 0.2s ease;
+  }
+  .stone-tile:hover {
+    border-color: var(--accent);
+    color: var(--text);
+  }
+  .sw {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    box-shadow: inset 0 -6px 12px rgba(0, 0, 0, 0.25), inset 0 6px 12px rgba(255, 255, 255, 0.2);
+    border: 1px solid var(--border);
+  }
+  .stone-tile strong {
+    display: block;
+    font-size: 1.0625rem;
+  }
+  .stone-tile .muted {
+    font-size: 0.875rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.25rem;
+  }
+</style>

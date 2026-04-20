@@ -1,0 +1,166 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base
+  title="Как отличить натуральные камни от подделок — Beadora.kz"
+  description="Профессиональное руководство: 5 простых тестов для проверки подлинности натуральных камней дома."
+>
+  <section class="ref-hero">
+    <div class="container container-narrow">
+      <nav class="crumbs">
+        <a href="/">Главная</a> / <span>Как отличить натуральные камни</span>
+      </nav>
+      <span class="eyebrow">Профессиональное руководство</span>
+      <h1>Как отличить натуральные камни</h1>
+      <p class="lede">
+        Покупка украшений из натуральных камней — это приобретение не только красоты, но и
+        личного талисмана. Рынок переполнен имитациями — вот несколько простых способов
+        проверить подлинность.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="container container-narrow">
+      <div class="test">
+        <span class="num">01</span>
+        <div>
+          <h2>Тест на температуру и теплопроводность</h2>
+          <p><strong>Натуральные камни</strong> — Аметист, Лазурит, Агат — имеют высокую теплоёмкость. Приложите камень к щеке или руке: он будет ощущаться прохладным и медленно нагреваться в ладони.</p>
+          <p class="muted">Имитации (стекло, пластик, акрил) быстро принимают температуру тела и воспринимаются тёплыми или нейтральными с первого касания.</p>
+        </div>
+      </div>
+
+      <div class="test">
+        <span class="num">02</span>
+        <div>
+          <h2>Проверка на дефекты и включения</h2>
+          <p><strong>Натуральные камни</strong> почти всегда имеют природные включения, прожилки, неоднородную окраску, микротрещины, «внутренние облака». В Лазурите — золотистые пиритовые вкрапления, в Розовом кварце — лёгкая замутнённость.</p>
+          <p class="muted">Имитации (стекло, пластмасса) часто идеально чистые, либо имеют ровные одинаково расположенные пузырьки воздуха (характерно для стекла).</p>
+        </div>
+      </div>
+
+      <div class="test">
+        <span class="num">03</span>
+        <div>
+          <h2>Оценка веса и плотности</h2>
+          <p><strong>Натуральные камни</strong> ощущаются тяжелее, чем их визуальный объём. Браслет из Чёрного Агата или Тигрового Глаза будет иметь ощутимый вес.</p>
+          <p class="muted">Пластик и акрил — подозрительно лёгкие.</p>
+        </div>
+      </div>
+
+      <div class="test">
+        <span class="num">04</span>
+        <div>
+          <h2>Проверка окраски и полос</h2>
+          <p><strong>Натуральные камни</strong> окрашены неравномерно. В камнях вроде Агата вы увидите естественные плавные полосы и переходы цвета.</p>
+          <p class="muted">Окрашенный камень или стекло: цвет может быть слишком ярким или «собранным» в микротрещинах.</p>
+        </div>
+      </div>
+
+      <div class="test">
+        <span class="num">05</span>
+        <div>
+          <h2>Тест на царапину <span class="warn">(осторожно!)</span></h2>
+          <p><strong>Твёрдость камня по шкале Мооса</strong> — главный показатель. Натуральные камни кварцевой группы (Агат, Аметист, Цитрин) не царапаются ногтем или медной монетой.</p>
+          <p class="muted">Пластик или мягкое стекло: царапаются острым предметом (иглой, ножом).</p>
+        </div>
+      </div>
+
+      <aside class="guarantee">
+        <h3>Наша гарантия подлинности</h3>
+        <p>
+          Все камни Beadora — натуральные, с поставщиков, которые дают сертификаты происхождения.
+          Если после покупки у вас возникли сомнения — напишите нам, сделаем полную проверку и
+          заменим изделие.
+        </p>
+        <a href="/contacts" class="btn btn-primary">Связаться с нами</a>
+      </aside>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .ref-hero {
+    padding: 3rem 0 2rem;
+  }
+  .crumbs {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+  }
+  .crumbs a {
+    color: var(--text-muted);
+  }
+  .eyebrow {
+    display: inline-block;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+  }
+  .lede {
+    color: var(--text-muted);
+    font-size: 1.125rem;
+    max-width: 60ch;
+    line-height: 1.7;
+  }
+
+  .test {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.5rem;
+    padding: 2rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .test:last-of-type {
+    border-bottom: none;
+  }
+  .num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+  }
+  h2 {
+    margin: 0 0 0.75rem;
+    font-size: 1.5rem;
+  }
+  h2 .warn {
+    color: var(--error);
+    font-size: 0.8em;
+  }
+  p {
+    line-height: 1.7;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+  }
+  p.muted {
+    color: var(--text-muted);
+    margin-bottom: 0;
+  }
+  p strong {
+    color: var(--text);
+  }
+
+  .guarantee {
+    margin-top: 3rem;
+    padding: 2rem;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: 20px;
+    text-align: center;
+  }
+  .guarantee h3 {
+    margin-bottom: 0.75rem;
+    font-size: 1.375rem;
+  }
+  .guarantee p {
+    max-width: 50ch;
+    margin: 0 auto 1.25rem;
+    color: var(--text-muted);
+  }
+</style>

@@ -1,0 +1,247 @@
+---
+import { STONES, ZODIAC } from '../../lib/data';
+
+export interface Props {
+  activeCategory?: string;
+}
+const { activeCategory } = Astro.props;
+
+const categories = [
+  { slug: 'bracelet', title: 'Браслеты' },
+  { slug: 'necklace', title: 'Ожерелья' },
+  { slug: 'earrings', title: 'Серьги' },
+  { slug: 'set', title: 'Комплекты' },
+];
+---
+<aside class="filters" id="catalogFilters">
+  <details class="group" open>
+    <summary>Категория</summary>
+    <div class="options">
+      {categories.map((c) => (
+        <label>
+          <input
+            type="checkbox"
+            data-filter="category"
+            value={c.slug}
+            checked={activeCategory === c.slug}
+          />
+          {c.title}
+        </label>
+      ))}
+    </div>
+  </details>
+
+  <details class="group" open>
+    <summary>Цена</summary>
+    <div class="price-controls">
+      <label>
+        От <input type="number" data-filter="price-min" min="0" step="500" placeholder="5 000" />
+      </label>
+      <label>
+        До <input type="number" data-filter="price-max" min="0" step="500" placeholder="25 000" />
+      </label>
+    </div>
+  </details>
+
+  <details class="group">
+    <summary>Камни</summary>
+    <div class="chips">
+      {STONES.map((s) => (
+        <label class="chip">
+          <input type="checkbox" data-filter="stone" value={s.slug} />
+          <span class="dot" style={`background:${s.color}`}></span>
+          {s.title}
+        </label>
+      ))}
+    </div>
+  </details>
+
+  <details class="group">
+    <summary>Знак Зодиака</summary>
+    <div class="zodiac-grid">
+      {ZODIAC.map((z) => (
+        <label class="zodiac-btn" title={z.title}>
+          <input type="checkbox" data-filter="zodiac" value={z.slug} />
+          <span class="sym">{z.symbol}</span>
+          <span class="name">{z.title}</span>
+        </label>
+      ))}
+    </div>
+  </details>
+
+  <details class="group">
+    <summary>Дополнительно</summary>
+    <div class="options">
+      <label>
+        <input type="checkbox" data-filter="new" value="true" />
+        Только новинки
+      </label>
+      <label>
+        <input type="checkbox" data-filter="available" value="true" checked />
+        Только в наличии
+      </label>
+    </div>
+  </details>
+
+  <button class="btn btn-ghost reset" id="filtersReset" type="button">Сбросить фильтры</button>
+</aside>
+
+<style>
+  .filters {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1rem 1.25rem;
+    border-radius: 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    position: sticky;
+    top: 80px;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+  }
+  .group {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .group:last-of-type {
+    border-bottom: none;
+  }
+  summary {
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    list-style: none;
+    padding: 0.25rem 0;
+    color: var(--text);
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary::before {
+    content: '+';
+    display: inline-block;
+    width: 1.5em;
+    color: var(--accent);
+    font-size: 1.125rem;
+  }
+  .group[open] summary::before {
+    content: '−';
+  }
+
+  .options,
+  .chips,
+  .price-controls,
+  .zodiac-grid {
+    padding-top: 0.5rem;
+  }
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .options label,
+  .chips label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9375rem;
+    color: var(--text-muted);
+    cursor: pointer;
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+  }
+  .chips label {
+    padding: 0.375rem 0.625rem;
+    border-radius: 999px;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    font-size: 0.8125rem;
+  }
+  .chips input {
+    display: none;
+  }
+  .chips input:checked + .dot + ::marker,
+  .chips label:has(input:checked) {
+    background: var(--accent);
+    color: var(--accent-contrast);
+    border-color: var(--accent);
+  }
+  .chips .dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    display: inline-block;
+  }
+
+  .price-controls {
+    display: flex;
+    gap: 0.5rem;
+  }
+  .price-controls label {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+  }
+  .price-controls input {
+    flex: 1;
+    width: 100%;
+    padding: 0.5rem 0.625rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    font: inherit;
+    font-size: 0.875rem;
+  }
+  .price-controls input:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  .zodiac-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.375rem;
+  }
+  .zodiac-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.125rem;
+    padding: 0.5rem 0.25rem;
+    border-radius: 10px;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    font-size: 0.6875rem;
+    color: var(--text-muted);
+  }
+  .zodiac-btn:has(input:checked) {
+    background: var(--accent);
+    color: var(--accent-contrast);
+    border-color: var(--accent);
+  }
+  .zodiac-btn input {
+    display: none;
+  }
+  .zodiac-btn .sym {
+    font-size: 1.125rem;
+    font-family: 'Playfair Display', serif;
+  }
+  .zodiac-btn .name {
+    font-size: 0.6875rem;
+  }
+
+  .reset {
+    margin-top: 0.75rem;
+    align-self: flex-start;
+  }
+</style>

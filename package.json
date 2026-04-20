@@ -1,0 +1,27 @@
+{
+  "name": "beadora-site",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.2.1",
+    "@fontsource/cormorant-garamond": "^5.1.0",
+    "@fontsource/manrope": "^5.1.0",
+    "@fontsource/playfair-display": "^5.1.0",
+    "astro": "^5.1.0",
+    "sharp": "^0.33.5",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.8",
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
+  }
+}

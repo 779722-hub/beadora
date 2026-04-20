@@ -1,0 +1,76 @@
+---
+const tiles = Array.from({ length: 6 }).map((_, i) => ({
+  src: `/images/instagram/${String(i + 1).padStart(2, '0')}.jpg`,
+  alt: `Beadora в Instagram — фото ${i + 1}`,
+}));
+---
+<section class="instagram-strip">
+  <div class="container">
+    <div class="strip">
+      {tiles.map((t) => (
+        <a class="tile" href="https://www.instagram.com/beadora.kz/" target="_blank" rel="noopener">
+          <img src={t.src} alt={t.alt} loading="lazy" />
+          <span class="overlay">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </span>
+        </a>
+      ))}
+    </div>
+    <div class="cta-row">
+      <a href="https://www.instagram.com/beadora.kz/" target="_blank" rel="noopener" class="btn btn-secondary">
+        @beadora.kz — подписаться
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .strip {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.5rem;
+  }
+  @media (max-width: 720px) {
+    .strip {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .tile {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 10px;
+    background: var(--surface-raised);
+  }
+  .tile img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+  .tile:hover img {
+    transform: scale(1.08);
+  }
+  .overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.45);
+    color: #fff;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  .overlay svg {
+    width: 32px;
+    height: 32px;
+  }
+  .tile:hover .overlay {
+    opacity: 1;
+  }
+  .cta-row {
+    margin-top: 1.5rem;
+    text-align: center;
+  }
+</style>

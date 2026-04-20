@@ -1,0 +1,114 @@
+---
+---
+<button
+  type="button"
+  class="theme-toggle"
+  id="themeToggle"
+  aria-label="Переключить тему"
+  title="Переключить тему (светлая / тёмная / автоматическая по времени Астаны)"
+>
+  <svg class="icon icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="4"></circle>
+    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+  </svg>
+  <svg class="icon icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+  </svg>
+  <svg class="icon icon-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="9"></circle>
+    <path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"></path>
+  </svg>
+  <span class="theme-label" data-mode-label>авто</span>
+</button>
+
+<style>
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.875rem;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    transition:
+      color 0.2s ease,
+      background-color 0.2s ease,
+      border-color 0.2s ease;
+  }
+  .theme-toggle:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+  .theme-toggle .icon {
+    width: 18px;
+    height: 18px;
+    display: none;
+  }
+  :root[data-mode='light'] .theme-toggle .icon-sun,
+  :root[data-mode='dark'] .theme-toggle .icon-moon,
+  :root[data-mode='auto'] .theme-toggle .icon-auto {
+    display: block;
+  }
+  .theme-label {
+    letter-spacing: 0.02em;
+    text-transform: lowercase;
+  }
+
+  @media (max-width: 640px) {
+    .theme-label {
+      display: none;
+    }
+    .theme-toggle {
+      padding: 0.5rem;
+    }
+  }
+</style>
+
+<script>
+  import { readMode, writeMode, resolveTheme, applyTheme, type ThemeMode } from '../../lib/theme';
+
+  const MODES: ThemeMode[] = ['auto', 'light', 'dark'];
+  const LABELS: Record<ThemeMode, string> = {
+    auto: 'авто',
+    light: 'день',
+    dark: 'ночь',
+  };
+
+  function syncLabel(mode: ThemeMode) {
+    document.documentElement.dataset.mode = mode;
+    document.querySelectorAll<HTMLElement>('[data-mode-label]').forEach((el) => {
+      el.textContent = LABELS[mode];
+    });
+  }
+
+  function cycleMode() {
+    const current = readMode();
+    const next = MODES[(MODES.indexOf(current) + 1) % MODES.length];
+    writeMode(next);
+    syncLabel(next);
+    applyTheme(resolveTheme(next));
+  }
+
+  function tickAuto() {
+    if (readMode() === 'auto') applyTheme(resolveTheme('auto'));
+  }
+
+  function init() {
+    const mode = readMode();
+    syncLabel(mode);
+    applyTheme(resolveTheme(mode));
+    document.querySelectorAll<HTMLElement>('#themeToggle').forEach((btn) => {
+      btn.addEventListener('click', cycleMode);
+    });
+    setInterval(tickAuto, 60_000);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+</script>

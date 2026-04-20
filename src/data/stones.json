@@ -1,0 +1,152 @@
+[
+  {
+    "slug": "ametist",
+    "title": "Аметист",
+    "color": "#6b4d8f",
+    "short": "Камень мудрости и внутреннего равновесия",
+    "properties": ["harmony", "protection", "wisdom"],
+    "zodiac_affinity": ["ryby", "vodoley", "strelec"],
+    "description": "Фиолетовая разновидность кварца. Считается, что аметист помогает справляться со стрессом, успокаивает ум и поддерживает творческую интуицию.",
+    "image": "/images/stones/ametist.jpg"
+  },
+  {
+    "slug": "citrin",
+    "title": "Цитрин",
+    "color": "#e8b94a",
+    "short": "Солнечный камень достатка и радости",
+    "properties": ["luck", "joy", "wealth"],
+    "zodiac_affinity": ["lev", "bliznecy", "vesy"],
+    "description": "Золотистая разновидность кварца. Его называют «камнем торговцев» — приносит удачу в делах и поднимает настроение.",
+    "image": "/images/stones/citrin.jpg"
+  },
+  {
+    "slug": "lazurit",
+    "title": "Лазурит",
+    "color": "#2a4d8f",
+    "short": "Королевский камень истины",
+    "properties": ["wisdom", "truth", "protection"],
+    "zodiac_affinity": ["strelec", "vodoley", "telec"],
+    "description": "Глубокий синий камень с золотистыми пиритовыми вкраплениями. С древности считался символом мудрости и королевской власти.",
+    "image": "/images/stones/lazurit.jpg"
+  },
+  {
+    "slug": "agat",
+    "title": "Агат",
+    "color": "#7a5c3f",
+    "short": "Камень баланса и стабильности",
+    "properties": ["balance", "protection", "grounding"],
+    "zodiac_affinity": ["telec", "deva", "kozerog"],
+    "description": "Многослойный халцедон с разнообразной окраской. Поддерживает устойчивость и уверенность в сложных ситуациях.",
+    "image": "/images/stones/agat.jpg"
+  },
+  {
+    "slug": "rose-quartz",
+    "title": "Розовый кварц",
+    "color": "#e8a8b8",
+    "short": "Камень любви и нежности",
+    "properties": ["love", "harmony", "tenderness"],
+    "zodiac_affinity": ["telec", "vesy", "ryby"],
+    "description": "Нежно-розовая разновидность кварца. Главный камень сердечных дел — раскрывает способность любить и принимать любовь.",
+    "image": "/images/stones/rose-quartz.jpg"
+  },
+  {
+    "slug": "tigers-eye",
+    "title": "Тигровый глаз",
+    "color": "#9a6b2f",
+    "short": "Камень силы и решимости",
+    "properties": ["courage", "protection", "focus"],
+    "zodiac_affinity": ["lev", "kozerog", "ovn"],
+    "description": "Золотисто-коричневый кварц с шелковистым отливом. Придаёт смелость и помогает принимать решения.",
+    "image": "/images/stones/tigers-eye.jpg"
+  },
+  {
+    "slug": "lunar",
+    "title": "Лунный камень",
+    "color": "#d8d4cc",
+    "short": "Камень интуиции и женственности",
+    "properties": ["intuition", "harmony", "tenderness"],
+    "zodiac_affinity": ["rak", "ryby", "vesy"],
+    "description": "Адуляр с мягким голубоватым свечением. Усиливает интуицию и сглаживает эмоциональные перепады.",
+    "image": "/images/stones/lunar.jpg"
+  },
+  {
+    "slug": "gematit",
+    "title": "Гематит",
+    "color": "#3a3a3a",
+    "short": "Заземляющий камень защиты",
+    "properties": ["protection", "grounding", "courage"],
+    "zodiac_affinity": ["ovn", "skorpion", "kozerog"],
+    "description": "Металлически-чёрный железорудный минерал. Традиционно используется как оберег и «заземлитель» энергии.",
+    "image": "/images/stones/gematit.jpg"
+  },
+  {
+    "slug": "pearl",
+    "title": "Натуральный жемчуг",
+    "color": "#f4f0e6",
+    "short": "Камень гармонии и чистоты",
+    "properties": ["harmony", "tenderness", "wisdom"],
+    "zodiac_affinity": ["rak", "ryby", "vesy"],
+    "description": "Органический камень, рождённый в раковине. Классический символ элегантности и женственности.",
+    "image": "/images/stones/pearl.jpg"
+  },
+  {
+    "slug": "black-agate",
+    "title": "Чёрный агат",
+    "color": "#1a1a1a",
+    "short": "Камень защиты и ночной магии",
+    "properties": ["protection", "grounding"],
+    "zodiac_affinity": ["skorpion", "kozerog"],
+    "description": "Глубокий чёрный агат. Считается сильным защитным камнем, поглощающим негативные воздействия.",
+    "image": "/images/stones/black-agate.jpg"
+  },
+  {
+    "slug": "labradorit",
+    "title": "Лабрадорит",
+    "color": "#4a5c6b",
+    "short": "Камень внутренней магии",
+    "properties": ["protection", "intuition", "wisdom"],
+    "zodiac_affinity": ["skorpion", "strelec", "vodoley"],
+    "description": "Сине-зелёный полевой шпат с переливами. Помогает развивать интуицию и раскрывать скрытые способности.",
+    "image": "/images/stones/labradorit.jpg"
+  },
+  {
+    "slug": "yasma",
+    "title": "Яшма",
+    "color": "#b05b3b",
+    "short": "Камень выносливости и храбрости",
+    "properties": ["courage", "grounding", "balance"],
+    "zodiac_affinity": ["deva", "kozerog", "telec"],
+    "description": "Пёстрый халцедон разных оттенков. Традиционный камень воинов и путешественников — придаёт выносливость.",
+    "image": "/images/stones/yasma.jpg"
+  },
+  {
+    "slug": "garnet",
+    "title": "Гранат",
+    "color": "#8a1a1a",
+    "short": "Камень страсти и силы",
+    "properties": ["love", "courage", "joy"],
+    "zodiac_affinity": ["ovn", "lev", "skorpion"],
+    "description": "Рубиново-красный камень. Символ страсти и преданности, поддерживает жизненную энергию.",
+    "image": "/images/stones/garnet.jpg"
+  },
+  {
+    "slug": "crystal",
+    "title": "Горный хрусталь",
+    "color": "#f0f0f0",
+    "short": "Камень чистоты и ясности",
+    "properties": ["harmony", "wisdom", "balance"],
+    "zodiac_affinity": ["vodoley", "bliznecy", "vesy"],
+    "description": "Прозрачный кварц. Считается универсальным усилителем намерений и очистителем мыслей.",
+    "image": "/images/stones/crystal.jpg"
+  },
+  {
+    "slug": "zircon",
+    "title": "Циркон",
+    "color": "#e0ebf5",
+    "short": "Камень ясности и сияния",
+    "properties": ["wisdom", "joy", "luck"],
+    "zodiac_affinity": ["strelec", "vodoley", "vesy"],
+    "description": "Игристый прозрачный минерал с алмазным блеском. Привлекает внимание и придаёт уверенности.",
+    "image": "/images/stones/zircon.jpg"
+  }
+]

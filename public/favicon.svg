@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="12" fill="#0a0907"/>
+  <text x="50%" y="54%" text-anchor="middle" dominant-baseline="middle"
+        font-family="Playfair Display, Georgia, serif" font-weight="900"
+        font-size="44" fill="#d4af37">B</text>
+  <path d="M32 12 C36 22 42 28 32 36 C22 28 28 22 32 12 Z" fill="#d4af37" opacity="0.22"/>
+</svg>

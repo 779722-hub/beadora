@@ -1,0 +1,232 @@
+---
+import type { Product } from '../../lib/schemas';
+import { formatPrice, stoneTitles } from '../../lib/data';
+
+export interface Props {
+  product: Product;
+}
+const { product } = Astro.props;
+const href = `/product/${product.sku}`;
+const img = product.images[0];
+---
+<article class="product-card card" data-sku={product.sku}>
+  <a href={href} class="media" aria-label={`${product.categoryTitle} «${product.name}»`}>
+    {product.new && <span class="ribbon">Новинка</span>}
+    <img src={img} alt={`${product.categoryTitle} «${product.name}»`} loading="lazy" />
+  </a>
+  <div class="body">
+    <div class="meta">
+      <span class="sku">Арт. {product.sku}</span>
+      <button
+        class="fav-btn"
+        data-fav-toggle={product.sku}
+        aria-label="В избранное"
+        type="button"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+      </button>
+    </div>
+    <h3 class="name">
+      <a href={href}>
+        <span class="category">{product.categoryTitle}</span>
+        <span class="title">«{product.name}»</span>
+      </a>
+    </h3>
+    <p class="stones">{stoneTitles(product.stones)}</p>
+    <div class="bottom">
+      <span class="price">{formatPrice(product.price)}</span>
+      <button
+        class="btn btn-primary btn-sm"
+        data-add-cart={product.sku}
+        data-name={product.name}
+        data-category={product.categoryTitle}
+        data-price={product.price}
+        data-image={img}
+        type="button"
+      >
+        В корзину
+      </button>
+    </div>
+  </div>
+</article>
+
+<style>
+  .product-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+  }
+  .media {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    display: block;
+    background: var(--surface-raised);
+  }
+  .media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+  .product-card:hover .media img {
+    transform: scale(1.05);
+  }
+  .ribbon {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 0.25rem 0.625rem;
+    background: var(--accent);
+    color: var(--accent-contrast);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-radius: 4px;
+    z-index: 2;
+  }
+  .body {
+    padding: 1rem 1.125rem 1.125rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+  }
+  .meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .sku {
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    color: var(--text-subtle);
+    text-transform: uppercase;
+  }
+  .fav-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    color: var(--text-muted);
+    transition: color 0.2s ease;
+  }
+  .fav-btn:hover,
+  .fav-btn[data-active='true'] {
+    color: var(--accent);
+  }
+  .fav-btn[data-active='true'] svg {
+    fill: var(--accent);
+  }
+  .fav-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .name {
+    margin: 0.125rem 0 0;
+    font-size: 1.125rem;
+    line-height: 1.2;
+  }
+  .name a {
+    color: var(--text);
+    text-decoration: none;
+  }
+  .name a:hover .title {
+    color: var(--accent);
+  }
+  .category {
+    display: block;
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    margin-bottom: 0.125rem;
+  }
+  .title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    transition: color 0.2s ease;
+  }
+
+  .stones {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    line-height: 1.4;
+    flex: 1;
+  }
+
+  .bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+  .price {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+</style>
+
+<script>
+  import { addToCart } from '../../lib/cart';
+  import { toggleFavorite, isFavorite, readFavorites } from '../../lib/favorites';
+
+  function syncFavButtons() {
+    const favs = new Set(readFavorites());
+    document.querySelectorAll<HTMLElement>('[data-fav-toggle]').forEach((btn) => {
+      const sku = btn.dataset.favToggle!;
+      btn.dataset.active = favs.has(sku) ? 'true' : 'false';
+    });
+  }
+
+  function init() {
+    document.querySelectorAll<HTMLElement>('[data-fav-toggle]').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const sku = btn.dataset.favToggle!;
+        toggleFavorite(sku);
+        btn.dataset.active = isFavorite(sku) ? 'true' : 'false';
+      });
+    });
+
+    document.querySelectorAll<HTMLElement>('[data-add-cart]').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const d = btn.dataset;
+        addToCart({
+          sku: d.addCart!,
+          name: `${d.category} «${d.name}»`,
+          price: Number(d.price),
+          image: d.image!,
+        });
+        const original = btn.textContent;
+        btn.textContent = 'Добавлено ✓';
+        btn.setAttribute('disabled', '');
+        setTimeout(() => {
+          btn.textContent = original;
+          btn.removeAttribute('disabled');
+        }, 1400);
+      });
+    });
+
+    syncFavButtons();
+    window.addEventListener('favorites:change', syncFavButtons);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+</script>

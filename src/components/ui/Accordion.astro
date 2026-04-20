@@ -1,0 +1,72 @@
+---
+export interface Props {
+  items: { q: string; a: string }[];
+}
+const { items } = Astro.props;
+---
+<div class="accordion">
+  {items.map((item, i) => (
+    <details class="accordion-item" open={i === 0}>
+      <summary>
+        <span>{item.q}</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="12" y1="5" x2="12" y2="19"/>
+          <line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+      </summary>
+      <div class="content" set:html={item.a} />
+    </details>
+  ))}
+</div>
+
+<style>
+  .accordion {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .accordion-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: border-color 0.2s ease;
+  }
+  .accordion-item[open] {
+    border-color: var(--accent);
+  }
+  summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.125rem 1.5rem;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--text);
+    list-style: none;
+    transition: color 0.2s ease;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary:hover {
+    color: var(--accent);
+  }
+  summary svg {
+    width: 22px;
+    height: 22px;
+    color: var(--accent);
+    flex-shrink: 0;
+    transition: transform 0.25s ease;
+  }
+  .accordion-item[open] summary svg {
+    transform: rotate(45deg);
+  }
+  .content {
+    padding: 0 1.5rem 1.5rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+  }
+</style>

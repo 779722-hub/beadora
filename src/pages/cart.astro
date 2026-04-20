@@ -1,0 +1,134 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base
+  title="Корзина — Beadora.kz"
+  description="Ваши украшения готовы к заказу — оформим в WhatsApp."
+>
+  <section class="cart">
+    <div class="container container-narrow">
+      <nav class="crumbs">
+        <a href="/">Главная</a> / <span>Корзина</span>
+      </nav>
+      <h1>Корзина</h1>
+
+      <div class="content" id="cartContent">
+        <p class="loading">Загрузка…</p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .cart {
+    padding: 2rem 0 4rem;
+  }
+  .crumbs {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+  }
+  .crumbs a {
+    color: var(--text-muted);
+  }
+  h1 {
+    margin-bottom: 2rem;
+  }
+  .loading {
+    color: var(--text-muted);
+    text-align: center;
+    padding: 2rem;
+  }
+</style>
+
+<script>
+  import { readCart, removeFromCart, updateQty, clearCart, cartTotal, cartCount } from '../lib/cart';
+  import { buildWhatsAppLink, buildOrderMessage } from '../lib/whatsapp';
+  import { formatPrice } from '../lib/data';
+
+  function render() {
+    const container = document.getElementById('cartContent');
+    if (!container) return;
+    const items = readCart();
+    if (items.length === 0) {
+      container.innerHTML = `
+        <div style="padding:3rem;text-align:center;border:1px dashed var(--border);border-radius:16px;">
+          <p style="color:var(--text-muted);margin-bottom:1rem;">В корзине пока пусто</p>
+          <a href="/catalog" class="btn btn-primary">Перейти в каталог</a>
+        </div>
+      `;
+      return;
+    }
+
+    const rows = items.map((item) => `
+      <div class="cart-row" data-sku="${item.sku}" style="display:grid;grid-template-columns:80px 1fr auto auto;gap:1rem;align-items:center;padding:1rem;background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:0.75rem;">
+        <img src="${item.image}" alt="${item.name}" style="width:80px;height:80px;object-fit:cover;border-radius:10px;" />
+        <div>
+          <strong style="font-family:'Playfair Display',serif;font-size:1.0625rem;">${item.name}</strong>
+          <div style="font-size:0.8125rem;color:var(--text-subtle);margin-top:0.125rem;">Арт. ${item.sku}</div>
+          <div style="color:var(--accent);font-weight:600;margin-top:0.25rem;">${formatPrice(item.price)}</div>
+        </div>
+        <div class="qty" style="display:inline-flex;align-items:center;gap:0.5rem;">
+          <button class="btn btn-secondary btn-sm" data-dec="${item.sku}">−</button>
+          <span style="min-width:24px;text-align:center;font-weight:600;">${item.qty}</span>
+          <button class="btn btn-secondary btn-sm" data-inc="${item.sku}">+</button>
+        </div>
+        <button class="btn btn-ghost" data-remove="${item.sku}" aria-label="Удалить" title="Удалить">✕</button>
+      </div>
+    `).join('');
+
+    const total = cartTotal(items);
+    const count = cartCount(items);
+    const waLink = buildWhatsAppLink(buildOrderMessage(items));
+
+    container.innerHTML = `
+      <div>${rows}</div>
+      <div class="cart-footer" style="margin-top:2rem;padding:1.5rem;background:var(--surface);border:1px solid var(--border-strong);border-radius:16px;display:flex;flex-direction:column;gap:1rem;">
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:1.25rem;">
+          <span>Итого (${count} шт.)</span>
+          <strong style="font-family:'Playfair Display',serif;font-size:1.75rem;color:var(--accent);">${formatPrice(total)}</strong>
+        </div>
+        <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+          <a href="${waLink}" target="_blank" rel="noopener" class="btn btn-primary btn-lg" style="flex:1;min-width:200px;">Оформить заказ в WhatsApp</a>
+          <button class="btn btn-secondary" id="cartClear">Очистить корзину</button>
+        </div>
+        <p style="color:var(--text-muted);font-size:0.875rem;margin:0;">
+          Заказ уходит готовым сообщением в WhatsApp на номер +7 (778) 780-65-40. Мы уточним сроки и оплату.
+        </p>
+      </div>
+    `;
+
+    container.querySelectorAll<HTMLElement>('[data-inc]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const items = readCart();
+        const item = items.find((i) => i.sku === btn.dataset.inc);
+        if (item) updateQty(item.sku, item.qty + 1);
+        render();
+      });
+    });
+    container.querySelectorAll<HTMLElement>('[data-dec]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const items = readCart();
+        const item = items.find((i) => i.sku === btn.dataset.dec);
+        if (item) updateQty(item.sku, item.qty - 1);
+        render();
+      });
+    });
+    container.querySelectorAll<HTMLElement>('[data-remove]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        removeFromCart(btn.dataset.remove!);
+        render();
+      });
+    });
+    document.getElementById('cartClear')?.addEventListener('click', () => {
+      clearCart();
+      render();
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', render);
+  } else {
+    render();
+  }
+</script>

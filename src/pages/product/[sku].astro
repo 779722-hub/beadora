@@ -1,0 +1,445 @@
+---
+import Base from '../../layouts/Base.astro';
+import ProductCard from '../../components/product/ProductCard.astro';
+import { PRODUCTS, stoneBySlug, zodiacBySlug, similarProducts, formatPrice } from '../../lib/data';
+import { buildWhatsAppLink, buildProductInquiry } from '../../lib/whatsapp';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths: GetStaticPaths = () => {
+  return PRODUCTS.map((p) => ({
+    params: { sku: p.sku },
+    props: { product: p },
+  }));
+};
+
+const { product } = Astro.props;
+const similar = similarProducts(product.sku, 4);
+const waLink = buildWhatsAppLink(buildProductInquiry(product.sku, product.name, product.price));
+
+const productJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  sku: product.sku,
+  name: `${product.categoryTitle} «${product.name}»`,
+  description: product.description,
+  image: product.images.map((i) => new URL(i, 'https://beadora.kz').toString()),
+  brand: { '@type': 'Brand', name: 'Beadora' },
+  offers: {
+    '@type': 'Offer',
+    price: product.price,
+    priceCurrency: 'KZT',
+    availability: product.available
+      ? 'https://schema.org/InStock'
+      : 'https://schema.org/OutOfStock',
+    url: new URL(`/product/${product.sku}`, 'https://beadora.kz').toString(),
+  },
+};
+---
+<Base
+  title={`${product.categoryTitle} «${product.name}» — арт. ${product.sku} · Beadora.kz`}
+  description={product.description || `${product.categoryTitle} «${product.name}» из натуральных камней. Артикул ${product.sku}, цена ${formatPrice(product.price)}.`}
+  image={product.images[0]}
+>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(productJsonLd)} />
+
+  <section class="product">
+    <div class="container">
+      <nav class="crumbs">
+        <a href="/">Главная</a> / <a href="/catalog">Каталог</a> /
+        <a href={`/catalog/${product.category === 'bracelet' ? 'bracelets' : product.category === 'necklace' ? 'necklaces' : product.category === 'set' ? 'sets' : 'earrings'}`}>{product.categoryTitle}</a> /
+        <span>«{product.name}»</span>
+      </nav>
+
+      <div class="layout">
+        <div class="gallery">
+          <div class="main-image">
+            <img id="galleryMain" src={product.images[0]} alt={`${product.categoryTitle} «${product.name}»`} />
+          </div>
+          {product.images.length > 1 && (
+            <div class="thumbs">
+              {product.images.map((src, i) => (
+                <button type="button" class="thumb" data-src={src}>
+                  <img src={src} alt={`Фото ${i + 1}`} loading="lazy" />
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div class="details">
+          <div class="top">
+            <span class="sku">Артикул {product.sku}</span>
+            {product.new && <span class="new-badge">Новинка</span>}
+          </div>
+          <h1>
+            <span class="category">{product.categoryTitle}</span>
+            <span class="name">«{product.name}»</span>
+          </h1>
+
+          <div class="price-row">
+            <span class="price">{formatPrice(product.price)}</span>
+            <span class={`stock ${product.available ? 'in' : 'out'}`}>
+              {product.available ? '● В наличии' : '○ Под заказ'}
+            </span>
+          </div>
+
+          <div class="stones-block">
+            <h3>Камни</h3>
+            <div class="stones-list">
+              {product.stones.map((slug) => {
+                const s = stoneBySlug(slug);
+                return (
+                  <a class="stone-chip" href={s ? `/stones/${s.slug}` : '#'}>
+                    <span class="dot" style={`background:${s?.color ?? '#999'}`}></span>
+                    {s?.title ?? slug}
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+
+          {product.zodiac.length > 0 && (
+            <div class="zodiac-block">
+              <h3>Подходит знакам</h3>
+              <div class="zodiac-list">
+                {product.zodiac.map((slug) => {
+                  const z = zodiacBySlug(slug);
+                  return (
+                    <a class="zodiac-chip" href={z ? `/catalog/zodiac/${z.slug}` : '#'}>
+                      <span class="sym">{z?.symbol ?? '✦'}</span>
+                      {z?.title ?? slug}
+                    </a>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          <div class="actions">
+            <button
+              class="btn btn-primary btn-lg"
+              data-add-cart={product.sku}
+              data-name={product.name}
+              data-category={product.categoryTitle}
+              data-price={product.price}
+              data-image={product.images[0]}
+              type="button"
+            >
+              В корзину
+            </button>
+            <a class="btn btn-secondary btn-lg" href={waLink} target="_blank" rel="noopener">
+              Написать в WhatsApp
+            </a>
+            <button class="fav-btn" data-fav-toggle={product.sku} type="button" aria-label="В избранное">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              </svg>
+            </button>
+          </div>
+
+          {product.description && (
+            <div class="description">
+              <h3>Описание</h3>
+              <p>{product.description}</p>
+            </div>
+          )}
+
+          {product.care && (
+            <div class="description">
+              <h3>Уход</h3>
+              <p>{product.care}</p>
+            </div>
+          )}
+
+          {product.length_cm && (
+            <div class="description">
+              <h3>Размер</h3>
+              <p>Длина: {product.length_cm} см</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {similar.length > 0 && (
+    <section style="background: var(--surface);">
+      <div class="container">
+        <h2 style="margin-bottom: 2rem;">Похожие украшения</h2>
+        <div class="similar-grid">
+          {similar.map((p) => <ProductCard product={p} />)}
+        </div>
+      </div>
+    </section>
+  )}
+</Base>
+
+<style>
+  .product {
+    padding: 2rem 0 3rem;
+  }
+  .crumbs {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+  }
+  .crumbs a {
+    color: var(--text-muted);
+  }
+  .crumbs a:hover {
+    color: var(--accent);
+  }
+  .crumbs span {
+    color: var(--text);
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: clamp(2rem, 4vw, 4rem);
+    align-items: start;
+  }
+  @media (max-width: 900px) {
+    .layout {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .main-image {
+    aspect-ratio: 1 / 1;
+    border-radius: 20px;
+    overflow: hidden;
+    background: var(--surface);
+    border: 1px solid var(--border);
+  }
+  .main-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .thumbs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
+  .thumb {
+    aspect-ratio: 1 / 1;
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    cursor: pointer;
+    padding: 0;
+    transition: border-color 0.2s ease;
+  }
+  .thumb:hover {
+    border-color: var(--accent);
+  }
+  .thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .details {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .top {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .sku {
+    font-size: 0.8125rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-subtle);
+  }
+  .new-badge {
+    padding: 0.25rem 0.625rem;
+    background: var(--accent);
+    color: var(--accent-contrast);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-radius: 4px;
+  }
+  h1 {
+    margin: 0;
+    font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  }
+  h1 .category {
+    display: block;
+    font-family: 'Manrope', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+    margin-bottom: 0.125rem;
+  }
+  h1 .name {
+    font-family: 'Playfair Display', serif;
+  }
+
+  .price-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .price {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .stock.in {
+    color: var(--success);
+  }
+  .stock.out {
+    color: var(--text-muted);
+  }
+
+  .stones-block h3,
+  .zodiac-block h3,
+  .description h3 {
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin: 0 0 0.75rem;
+  }
+  .stones-list,
+  .zodiac-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .stone-chip,
+  .zodiac-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.375rem 0.75rem;
+    border-radius: 999px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition: border-color 0.2s ease;
+  }
+  .stone-chip:hover,
+  .zodiac-chip:hover {
+    border-color: var(--accent);
+    color: var(--text);
+  }
+  .stone-chip .dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+  }
+  .zodiac-chip .sym {
+    font-family: 'Playfair Display', serif;
+    color: var(--accent);
+  }
+
+  .actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .actions .btn {
+    flex: 1;
+    min-width: 200px;
+  }
+  .fav-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border-strong);
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+  .fav-btn:hover,
+  .fav-btn[data-active='true'] {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+  .fav-btn[data-active='true'] svg {
+    fill: var(--accent);
+  }
+  .fav-btn svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .description p {
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .similar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.25rem;
+  }
+</style>
+
+<script>
+  import { addToCart } from '../../lib/cart';
+  import { toggleFavorite, isFavorite } from '../../lib/favorites';
+
+  function init() {
+    const main = document.getElementById('galleryMain') as HTMLImageElement | null;
+    document.querySelectorAll<HTMLElement>('.thumb').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        if (main && btn.dataset.src) main.src = btn.dataset.src;
+      });
+    });
+
+    document.querySelectorAll<HTMLElement>('[data-add-cart]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const d = btn.dataset;
+        addToCart({
+          sku: d.addCart!,
+          name: `${d.category} «${d.name}»`,
+          price: Number(d.price),
+          image: d.image!,
+        });
+        const original = btn.textContent;
+        btn.textContent = 'Добавлено ✓';
+        setTimeout(() => { if (original) btn.textContent = original; }, 1400);
+      });
+    });
+
+    document.querySelectorAll<HTMLElement>('[data-fav-toggle]').forEach((btn) => {
+      const sku = btn.dataset.favToggle!;
+      btn.dataset.active = isFavorite(sku) ? 'true' : 'false';
+      btn.addEventListener('click', () => {
+        toggleFavorite(sku);
+        btn.dataset.active = isFavorite(sku) ? 'true' : 'false';
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+</script>

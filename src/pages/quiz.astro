@@ -1,0 +1,418 @@
+---
+import Base from '../layouts/Base.astro';
+import { ZODIAC } from '../lib/data';
+---
+<Base
+  title="Подбор камня по зодиаку и настроению — Beadora.kz"
+  description="Короткий квиз из 5 шагов: подберём браслет, серьги или ожерелье по вашему знаку зодиака, настроению и бюджету."
+>
+  <section class="quiz">
+    <div class="container container-narrow">
+      <nav class="crumbs">
+        <a href="/">Главная</a> / <span>Подбор камня</span>
+      </nav>
+
+      <div class="quiz-card" id="quizCard">
+        <div class="progress">
+          <div class="progress-fill" id="quizProgress"></div>
+        </div>
+
+        <!-- Step 1: zodiac -->
+        <div class="step" data-step="1">
+          <h2>Ваш знак Зодиака</h2>
+          <p class="step-lede">Подберём камни, с которыми вы в резонансе.</p>
+          <div class="zodiac-grid">
+            {ZODIAC.map((z) => (
+              <button type="button" class="zodiac-opt" data-answer="zodiac" data-value={z.slug}>
+                <span class="sym">{z.symbol}</span>
+                <span class="name">{z.title}</span>
+                <span class="dates">{z.dates}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <!-- Step 2: goal -->
+        <div class="step" data-step="2" hidden>
+          <h2>Что важнее сейчас?</h2>
+          <p class="step-lede">Выберите энергию, которую хочется усилить.</p>
+          <div class="options-grid">
+            <button type="button" class="opt" data-answer="goal" data-value="harmony">
+              <span class="icon">☯</span>
+              <strong>Гармония</strong>
+              <span class="muted">Баланс и спокойствие</span>
+            </button>
+            <button type="button" class="opt" data-answer="goal" data-value="courage">
+              <span class="icon">⚔</span>
+              <strong>Сила</strong>
+              <span class="muted">Уверенность и решимость</span>
+            </button>
+            <button type="button" class="opt" data-answer="goal" data-value="love">
+              <span class="icon">♡</span>
+              <strong>Любовь</strong>
+              <span class="muted">Отношения и нежность</span>
+            </button>
+            <button type="button" class="opt" data-answer="goal" data-value="protection">
+              <span class="icon">✦</span>
+              <strong>Защита</strong>
+              <span class="muted">Оберег и стабильность</span>
+            </button>
+            <button type="button" class="opt" data-answer="goal" data-value="joy">
+              <span class="icon">☀</span>
+              <strong>Радость</strong>
+              <span class="muted">Лёгкость и достаток</span>
+            </button>
+            <button type="button" class="opt" data-answer="goal" data-value="wisdom">
+              <span class="icon">✧</span>
+              <strong>Мудрость</strong>
+              <span class="muted">Ясность и интуиция</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 3: type -->
+        <div class="step" data-step="3" hidden>
+          <h2>Какое украшение хотите?</h2>
+          <p class="step-lede">Можно выбрать несколько типов.</p>
+          <div class="options-grid options-2">
+            <button type="button" class="opt" data-answer="type" data-value="bracelet">
+              <strong>Браслет</strong>
+              <span class="muted">Камень рядом с пульсом</span>
+            </button>
+            <button type="button" class="opt" data-answer="type" data-value="necklace">
+              <strong>Ожерелье</strong>
+              <span class="muted">Акцент у сердечной чакры</span>
+            </button>
+            <button type="button" class="opt" data-answer="type" data-value="earrings">
+              <strong>Серьги</strong>
+              <span class="muted">Лёгкий дневной акцент</span>
+            </button>
+            <button type="button" class="opt" data-answer="type" data-value="set">
+              <strong>Комплект</strong>
+              <span class="muted">Собранный образ</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 4: budget -->
+        <div class="step" data-step="4" hidden>
+          <h2>Бюджет</h2>
+          <p class="step-lede">В тенге, за одно украшение.</p>
+          <div class="options-grid options-2">
+            <button type="button" class="opt" data-answer="budget" data-value="small">
+              <strong>До 10 000 ₸</strong>
+              <span class="muted">Серьги и простые браслеты</span>
+            </button>
+            <button type="button" class="opt" data-answer="budget" data-value="medium">
+              <strong>10 000 – 15 000 ₸</strong>
+              <span class="muted">Средний сегмент</span>
+            </button>
+            <button type="button" class="opt" data-answer="budget" data-value="large">
+              <strong>15 000 – 25 000 ₸</strong>
+              <span class="muted">Крупные ожерелья</span>
+            </button>
+            <button type="button" class="opt" data-answer="budget" data-value="any">
+              <strong>Неважно</strong>
+              <span class="muted">Покажите всё</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Results -->
+        <div class="step" data-step="5" hidden>
+          <h2>Ваша подборка</h2>
+          <p class="step-lede" id="resultSummary"></p>
+          <div class="results-grid" id="resultsGrid"></div>
+          <div class="result-actions">
+            <button class="btn btn-secondary" id="quizRestart">Пройти заново</button>
+            <a class="btn btn-primary" href="/catalog">Смотреть весь каталог</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .quiz {
+    padding: 2rem 0 4rem;
+  }
+  .crumbs {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+  }
+  .crumbs a {
+    color: var(--text-muted);
+  }
+  .quiz-card {
+    padding: clamp(1.5rem, 4vw, 3rem);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+  }
+  .progress {
+    height: 4px;
+    background: var(--surface-raised);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    width: 25%;
+    transition: width 0.4s ease;
+  }
+  .step-lede {
+    color: var(--text-muted);
+    margin-bottom: 1.75rem;
+  }
+  h2 {
+    margin-bottom: 0.5rem;
+  }
+
+  .zodiac-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 0.625rem;
+  }
+  .zodiac-opt {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 1rem 0.5rem;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    cursor: pointer;
+    transition: border-color 0.2s ease, transform 0.15s ease;
+    color: var(--text);
+  }
+  .zodiac-opt:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .zodiac-opt[data-selected='true'] {
+    border-color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 10%, transparent);
+  }
+  .zodiac-opt .sym {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--accent);
+  }
+  .zodiac-opt .name {
+    font-weight: 600;
+  }
+  .zodiac-opt .dates {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.625rem;
+  }
+  .options-grid.options-2 {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+  .opt {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+    padding: 1.25rem;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    cursor: pointer;
+    text-align: left;
+    color: var(--text);
+    transition: border-color 0.2s ease, transform 0.15s ease;
+  }
+  .opt:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .opt[data-selected='true'] {
+    border-color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 10%, transparent);
+  }
+  .opt .icon {
+    font-size: 1.5rem;
+    color: var(--accent);
+    margin-bottom: 0.25rem;
+  }
+  .opt strong {
+    font-size: 1.0625rem;
+  }
+  .opt .muted {
+    font-size: 0.875rem;
+  }
+
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+  .result-actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+  }
+</style>
+
+<script>
+  import { PRODUCTS, stoneBySlug, formatPrice, stoneTitles } from '../lib/data';
+  import type { Product } from '../lib/schemas';
+
+  const state = {
+    step: 1,
+    zodiac: '' as string,
+    goal: '' as string,
+    type: [] as string[],
+    budget: '' as string,
+  };
+
+  function updateProgress() {
+    const fill = document.getElementById('quizProgress');
+    if (fill) fill.style.width = `${Math.min(state.step / 4, 1) * 100}%`;
+  }
+
+  function showStep(n: number) {
+    state.step = n;
+    document.querySelectorAll<HTMLElement>('.step').forEach((el) => {
+      const step = Number(el.dataset.step);
+      if (step === n) el.removeAttribute('hidden');
+      else el.setAttribute('hidden', '');
+    });
+    updateProgress();
+  }
+
+  function pickProducts(): Product[] {
+    const goal = state.goal;
+    const types = state.type.length ? state.type : ['bracelet', 'necklace', 'earrings', 'set'];
+    const inBudget = (p: Product) => {
+      if (state.budget === 'small') return p.price <= 10000;
+      if (state.budget === 'medium') return p.price >= 10000 && p.price <= 15000;
+      if (state.budget === 'large') return p.price >= 15000;
+      return true;
+    };
+
+    const scored = PRODUCTS.map((p) => {
+      let score = 0;
+      if (p.zodiac.includes(state.zodiac)) score += 5;
+      if (p.properties.includes(goal)) score += 3;
+      p.stones.forEach((sl) => {
+        const s = stoneBySlug(sl);
+        if (s?.zodiac_affinity.includes(state.zodiac)) score += 2;
+        if (s?.properties.includes(goal)) score += 2;
+      });
+      if (types.includes(p.category)) score += 1;
+      if (!inBudget(p)) score -= 10;
+      return { p, score };
+    });
+
+    return scored
+      .filter((x) => x.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 6)
+      .map((x) => x.p);
+  }
+
+  function renderResults() {
+    const list = pickProducts();
+    const grid = document.getElementById('resultsGrid');
+    const summary = document.getElementById('resultSummary');
+    if (!grid || !summary) return;
+
+    const goalText: Record<string, string> = {
+      harmony: 'гармонию', courage: 'силу', love: 'любовь',
+      protection: 'защиту', joy: 'радость', wisdom: 'мудрость',
+    };
+    summary.textContent = `На основе вашего знака и запроса на ${goalText[state.goal] ?? 'энергию'} — ${list.length > 0 ? `${list.length} рекомендаций` : 'мы пока не нашли точных совпадений, напишите нам в WhatsApp — подберём индивидуально'}.`;
+
+    grid.innerHTML = list
+      .map(
+        (p) => `
+        <a class="card" href="/product/${p.sku}" style="display:flex;flex-direction:column;background:var(--surface-raised);border:1px solid var(--border);border-radius:14px;overflow:hidden;text-decoration:none;color:var(--text);">
+          <div style="aspect-ratio:1/1;overflow:hidden;background:var(--surface);">
+            <img src="${p.images[0]}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;" loading="lazy" />
+          </div>
+          <div style="padding:1rem;display:flex;flex-direction:column;gap:0.25rem;">
+            <span style="font-size:0.75rem;color:var(--text-subtle);letter-spacing:0.08em;text-transform:uppercase;">Арт. ${p.sku}</span>
+            <strong style="font-family:'Playfair Display',serif;font-size:1.0625rem;">${p.categoryTitle} «${p.name}»</strong>
+            <span style="color:var(--text-muted);font-size:0.875rem;">${stoneTitles(p.stones)}</span>
+            <span style="color:var(--accent);font-weight:600;margin-top:0.25rem;">${formatPrice(p.price)}</span>
+          </div>
+        </a>`
+      )
+      .join('');
+  }
+
+  function select(btn: HTMLElement) {
+    const answer = btn.dataset.answer!;
+    const value = btn.dataset.value!;
+
+    if (answer === 'type') {
+      // multi-select
+      const idx = state.type.indexOf(value);
+      if (idx === -1) state.type.push(value);
+      else state.type.splice(idx, 1);
+      btn.dataset.selected = state.type.includes(value) ? 'true' : 'false';
+      // auto-advance after 400ms of last click
+      clearTimeout((select as any)._t);
+      (select as any)._t = setTimeout(() => {
+        if (state.type.length > 0) showStep(4);
+      }, 600);
+      return;
+    }
+
+    (state as any)[answer] = value;
+    document.querySelectorAll<HTMLElement>(`[data-answer="${answer}"]`).forEach((el) => {
+      el.dataset.selected = el.dataset.value === value ? 'true' : 'false';
+    });
+
+    setTimeout(() => {
+      if (answer === 'zodiac') showStep(2);
+      else if (answer === 'goal') showStep(3);
+      else if (answer === 'budget') {
+        renderResults();
+        showStep(5);
+      }
+    }, 250);
+  }
+
+  function init() {
+    document.querySelectorAll<HTMLElement>('[data-answer]').forEach((btn) => {
+      btn.addEventListener('click', () => select(btn));
+    });
+    document.getElementById('quizRestart')?.addEventListener('click', () => {
+      state.zodiac = '';
+      state.goal = '';
+      state.type = [];
+      state.budget = '';
+      document.querySelectorAll<HTMLElement>('[data-selected]').forEach((el) => (el.dataset.selected = 'false'));
+      showStep(1);
+    });
+    updateProgress();
+
+    // Pre-select from query params
+    const params = new URLSearchParams(location.search);
+    const by = params.get('by');
+    if (by === 'zodiac') {
+      // emphasise step 1 — already shown
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+</script>

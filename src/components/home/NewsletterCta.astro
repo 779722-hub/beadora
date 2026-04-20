@@ -1,0 +1,80 @@
+---
+---
+<section class="newsletter">
+  <div class="container">
+    <div class="wrap">
+      <div class="text">
+        <span class="eyebrow">Рассылка Beadora</span>
+        <h2>Узнавайте о новинках первыми</h2>
+        <p>Письма раз в две недели: новые коллекции, истории камней и подборки ко знакам зодиака.</p>
+      </div>
+      <form class="form" action="https://formsubmit.co/779722@gmail.com" method="POST">
+        <input type="hidden" name="_subject" value="Новая подписка на Beadora" />
+        <input type="hidden" name="_captcha" value="false" />
+        <input type="email" name="email" placeholder="Ваш e-mail" required aria-label="E-mail" />
+        <button class="btn btn-primary" type="submit">Подписаться</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<style>
+  .newsletter {
+    padding: clamp(3rem, 6vw, 5rem) 0;
+  }
+  .wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    align-items: center;
+    padding: clamp(2rem, 4vw, 3.5rem);
+    border-radius: 24px;
+    background: linear-gradient(135deg, var(--surface) 0%, var(--surface-raised) 100%);
+    border: 1px solid var(--border-strong);
+  }
+  @media (max-width: 820px) {
+    .wrap {
+      grid-template-columns: 1fr;
+    }
+  }
+  .eyebrow {
+    display: inline-block;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+  }
+  h2 {
+    margin-bottom: 0.625rem;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+  }
+  p {
+    color: var(--text-muted);
+    margin: 0;
+  }
+  .form {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  input[type='email'] {
+    flex: 1;
+    min-width: 200px;
+    padding: 0.875rem 1.125rem;
+    border-radius: 10px;
+    border: 1px solid var(--border-strong);
+    background: var(--bg);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 1rem;
+  }
+  input[type='email']:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  .btn {
+    white-space: nowrap;
+  }
+</style>

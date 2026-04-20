@@ -1,0 +1,86 @@
+---
+import { STONES } from '../../lib/data';
+
+const heroStones = STONES.filter((s) =>
+  ['ametist', 'citrin', 'lazurit', 'rose-quartz', 'tigers-eye', 'lunar'].includes(s.slug)
+);
+---
+<section class="stone-power">
+  <div class="container">
+    <div class="stones-grid">
+      {heroStones.map((stone) => (
+        <a class="stone-card reveal" href={`/stones/${stone.slug}`}>
+          <span class="swatch" style={`--stone-color: ${stone.color}`}></span>
+          <div class="info">
+            <h3>{stone.title}</h3>
+            <p>{stone.short}</p>
+          </div>
+          <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </a>
+      ))}
+    </div>
+    <div class="all-stones">
+      <a href="/stones" class="btn btn-secondary">Все камни и их свойства</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .stones-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+  .stone-card {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.25rem;
+    border-radius: 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    text-decoration: none;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+  .stone-card:hover {
+    border-color: var(--accent);
+    transform: translateX(2px);
+    color: var(--text);
+  }
+  .swatch {
+    display: block;
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    background: var(--stone-color);
+    box-shadow: inset 0 -8px 16px rgba(0, 0, 0, 0.25), inset 0 8px 16px rgba(255, 255, 255, 0.2);
+    border: 2px solid var(--border);
+  }
+  .info h3 {
+    margin: 0 0 0.125rem;
+    font-size: 1.125rem;
+  }
+  .info p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+  }
+  .arrow {
+    width: 22px;
+    height: 22px;
+    color: var(--accent);
+    transition: transform 0.2s ease;
+  }
+  .stone-card:hover .arrow {
+    transform: translateX(4px);
+  }
+  .all-stones {
+    margin-top: 2rem;
+    text-align: center;
+  }
+</style>

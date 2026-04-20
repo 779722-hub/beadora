@@ -1,0 +1,109 @@
+---
+import { CATEGORIES, PRODUCTS } from '../../lib/data';
+
+const items = CATEGORIES.map((c) => {
+  const count = PRODUCTS.filter((p) => {
+    if (c.slug === 'bracelets') return p.category === 'bracelet';
+    if (c.slug === 'necklaces') return p.category === 'necklace';
+    if (c.slug === 'earrings') return p.category === 'earrings';
+    if (c.slug === 'sets') return p.category === 'set';
+    return false;
+  }).length;
+  return { ...c, count };
+});
+---
+<section class="categories">
+  <div class="container">
+    <div class="grid">
+      {items.map((c) => (
+        <a class="tile reveal" href={`/catalog/${c.slug}`}>
+          <div class="media">
+            <img src={c.image} alt={c.title} loading="lazy" />
+          </div>
+          <div class="text">
+            <h3>{c.title}</h3>
+            <p>{c.description}</p>
+            <span class="meta">
+              <span class="count">{c.count} изделий</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .categories {
+    padding: 0 0 clamp(3rem, 6vw, 5rem);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.25rem;
+  }
+  .tile {
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+    overflow: hidden;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    text-decoration: none;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .tile:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent);
+    box-shadow: var(--shadow-md);
+    color: var(--text);
+  }
+  .media {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--surface-raised);
+  }
+  .media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+  .tile:hover .media img {
+    transform: scale(1.05);
+  }
+  .text {
+    padding: 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  h3 {
+    margin: 0;
+    font-size: 1.375rem;
+  }
+  p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.9375rem;
+    flex: 1;
+  }
+  .meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .count {
+    font-size: 0.875rem;
+  }
+  .meta svg {
+    width: 20px;
+    height: 20px;
+  }
+</style>

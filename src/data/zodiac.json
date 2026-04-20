@@ -1,0 +1,122 @@
+[
+  {
+    "slug": "ovn",
+    "title": "Овен",
+    "symbol": "♈",
+    "dates": "21 марта — 19 апреля",
+    "element": "fire",
+    "recommended_stones": ["tigers-eye", "gematit", "yasma"],
+    "traits": ["Смелость", "Решимость", "Лидерство"],
+    "description": "Огненный знак, требующий камней-усилителей воли и защиты от импульсивности."
+  },
+  {
+    "slug": "telec",
+    "title": "Телец",
+    "symbol": "♉",
+    "dates": "20 апреля — 20 мая",
+    "element": "earth",
+    "recommended_stones": ["agat", "rose-quartz", "lazurit"],
+    "traits": ["Надёжность", "Чувственность", "Упорство"],
+    "description": "Земной знак ценит стабильность — камни поддерживают гармонию в отношениях и делах."
+  },
+  {
+    "slug": "bliznecy",
+    "title": "Близнецы",
+    "symbol": "♊",
+    "dates": "21 мая — 20 июня",
+    "element": "air",
+    "recommended_stones": ["citrin", "agat", "labradorit"],
+    "traits": ["Любознательность", "Коммуникабельность", "Гибкость"],
+    "description": "Воздушный знак — камни помогают фокусироваться и уравновешивать переменчивый ум."
+  },
+  {
+    "slug": "rak",
+    "title": "Рак",
+    "symbol": "♋",
+    "dates": "21 июня — 22 июля",
+    "element": "water",
+    "recommended_stones": ["lunar", "pearl", "rose-quartz"],
+    "traits": ["Эмпатия", "Забота", "Интуиция"],
+    "description": "Водный знак — лунные и жемчужные камни питают его интуитивную природу."
+  },
+  {
+    "slug": "lev",
+    "title": "Лев",
+    "symbol": "♌",
+    "dates": "23 июля — 22 августа",
+    "element": "fire",
+    "recommended_stones": ["citrin", "tigers-eye", "yasma"],
+    "traits": ["Щедрость", "Уверенность", "Харизма"],
+    "description": "Солнечный знак — золотистые камни усиливают природный блеск и лидерские качества."
+  },
+  {
+    "slug": "deva",
+    "title": "Дева",
+    "symbol": "♍",
+    "dates": "23 августа — 22 сентября",
+    "element": "earth",
+    "recommended_stones": ["agat", "yasma", "lunar"],
+    "traits": ["Аналитичность", "Педантичность", "Честность"],
+    "description": "Земной знак — камни помогают отпускать излишний контроль и принимать несовершенство."
+  },
+  {
+    "slug": "vesy",
+    "title": "Весы",
+    "symbol": "♎",
+    "dates": "23 сентября — 22 октября",
+    "element": "air",
+    "recommended_stones": ["rose-quartz", "lunar", "citrin"],
+    "traits": ["Гармония", "Эстетика", "Дипломатия"],
+    "description": "Воздушный знак — камни поддерживают внутренний баланс и красоту."
+  },
+  {
+    "slug": "skorpion",
+    "title": "Скорпион",
+    "symbol": "♏",
+    "dates": "23 октября — 21 ноября",
+    "element": "water",
+    "recommended_stones": ["black-agate", "labradorit", "gematit"],
+    "traits": ["Страсть", "Интуиция", "Глубина"],
+    "description": "Водный знак силы — тёмные защитные камни сочетаются с его глубинной природой."
+  },
+  {
+    "slug": "strelec",
+    "title": "Стрелец",
+    "symbol": "♐",
+    "dates": "22 ноября — 21 декабря",
+    "element": "fire",
+    "recommended_stones": ["lazurit", "ametist", "labradorit"],
+    "traits": ["Свобода", "Оптимизм", "Любознательность"],
+    "description": "Огненный знак путешественников — камни мудрости сопровождают в поиске истины."
+  },
+  {
+    "slug": "kozerog",
+    "title": "Козерог",
+    "symbol": "♑",
+    "dates": "22 декабря — 19 января",
+    "element": "earth",
+    "recommended_stones": ["tigers-eye", "black-agate", "yasma"],
+    "traits": ["Целеустремлённость", "Дисциплина", "Ответственность"],
+    "description": "Земной знак — серьёзные камни помогают сохранять внутреннюю опору в длинной дистанции."
+  },
+  {
+    "slug": "vodoley",
+    "title": "Водолей",
+    "symbol": "♒",
+    "dates": "20 января — 18 февраля",
+    "element": "air",
+    "recommended_stones": ["ametist", "lazurit", "labradorit"],
+    "traits": ["Оригинальность", "Гуманизм", "Независимость"],
+    "description": "Воздушный знак новаторов — камни расширяют сознание и поддерживают интуитивные озарения."
+  },
+  {
+    "slug": "ryby",
+    "title": "Рыбы",
+    "symbol": "♓",
+    "dates": "19 февраля — 20 марта",
+    "element": "water",
+    "recommended_stones": ["ametist", "pearl", "rose-quartz"],
+    "traits": ["Эмпатия", "Мечтательность", "Творчество"],
+    "description": "Водный знак художников — камни помогают заземляться без потери чувствительности."
+  }
+]

@@ -1,0 +1,160 @@
+---
+import Base from '../layouts/Base.astro';
+import VideoBlock from '../components/home/VideoBlock.astro';
+---
+<Base title="О бренде Beadora.kz" description="История мастерской Beadora: авторские украшения из натуральных камней в Астане.">
+  <section class="about-hero">
+    <div class="container container-narrow">
+      <nav class="crumbs">
+        <a href="/">Главная</a> / <span>О бренде</span>
+      </nav>
+      <span class="eyebrow">О бренде</span>
+      <h1>Beadora — энергия природы в каждом украшении</h1>
+      <p class="lede">
+        Мы верим, что камень — это не украшение, а спутник. Каждое наше изделие собирается
+        вручную с учётом энергетики материала, стиля владельца и астрологической совместимости.
+      </p>
+    </div>
+  </section>
+
+  <VideoBlock />
+
+  <section class="story">
+    <div class="container container-narrow">
+      <div class="grid">
+        <div>
+          <h2>Как всё начиналось</h2>
+          <p>
+            Beadora родилась в Астане в 2020 году — из любви к минералам и желания делиться
+            ими с людьми. Мы начинали как небольшая мастерская, собирая браслеты для подруг.
+            За пять лет мы выросли в магазин «ADORA» на Брусиловского, 5, но принципы
+            остались теми же.
+          </p>
+        </div>
+        <div>
+          <h2>Что для нас важно</h2>
+          <ul>
+            <li><strong>Натуральность.</strong> Только природные минералы, никаких имитаций.</li>
+            <li><strong>Ручная работа.</strong> Каждое украшение собирается лично мастером.</li>
+            <li><strong>Подбор по энергии.</strong> Мы помогаем выбрать камень, который подойдёт именно вам.</li>
+            <li><strong>Забота о клиенте.</strong> Индивидуальные заказы, обмен и возврат в 7 дней.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div>
+          <strong>5+</strong>
+          <span>лет на рынке Казахстана</span>
+        </div>
+        <div>
+          <strong>2 000+</strong>
+          <span>украшений в работе клиентов</span>
+        </div>
+        <div>
+          <strong>15+</strong>
+          <span>видов природных камней</span>
+        </div>
+        <div>
+          <strong>12</strong>
+          <span>подборок по знаку зодиака</span>
+        </div>
+      </div>
+
+      <div class="cta-row">
+        <a href="/catalog" class="btn btn-primary btn-lg">Смотреть каталог</a>
+        <a href="/contacts" class="btn btn-secondary btn-lg">Как нас найти</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .about-hero {
+    padding: 3rem 0 2rem;
+  }
+  .crumbs {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+  }
+  .crumbs a {
+    color: var(--text-muted);
+  }
+  .eyebrow {
+    display: inline-block;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+  }
+  .lede {
+    font-size: 1.125rem;
+    color: var(--text-muted);
+    max-width: 60ch;
+    line-height: 1.7;
+  }
+  .story {
+    padding: 3rem 0 5rem;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+  }
+  @media (max-width: 720px) {
+    .grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+  h2 {
+    margin-bottom: 0.75rem;
+  }
+  p {
+    line-height: 1.7;
+    color: var(--text-muted);
+  }
+  ul {
+    padding-left: 1.25rem;
+    line-height: 1.8;
+    color: var(--text-muted);
+  }
+  ul strong {
+    color: var(--text);
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+    padding: 2rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    margin-bottom: 3rem;
+  }
+  .stats div {
+    text-align: center;
+  }
+  .stats strong {
+    display: block;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    color: var(--accent);
+  }
+  .stats span {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+  }
+
+  .cta-row {
+    display: flex;
+    gap: 0.875rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+</style>
