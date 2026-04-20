@@ -1,8 +1,24 @@
 ---
+const slides = [
+  { src: '/images/hero.jpg', alt: 'Девушка в национальном костюме с браслетом Beadora из натуральных камней' },
+  { src: '/images/lookbook/03.jpg', alt: 'Ожерелье Beadora из лазурита и розового кварца в классическом образе' },
+  { src: '/images/lookbook/01.jpg', alt: 'Ожерелье Beadora на манекене в интерьере' },
+  { src: '/images/lookbook/05.jpg', alt: 'Украшение Beadora из натуральных камней в интерьере' },
+];
 ---
 <section class="hero">
-  <div class="hero-media">
-    <img src="/images/hero.jpg" alt="Девушка в национальном костюме с браслетом Beadora из натуральных камней" loading="eager" fetchpriority="high" width="1440" height="900" />
+  <div class="hero-media" data-slideshow>
+    {slides.map((s, i) => (
+      <img
+        src={s.src}
+        alt={s.alt}
+        class:list={['slide', i === 0 ? 'is-active' : '']}
+        loading={i === 0 ? 'eager' : 'lazy'}
+        fetchpriority={i === 0 ? 'high' : 'auto'}
+        width="1440"
+        height="900"
+      />
+    ))}
     <div class="overlay"></div>
   </div>
   <div class="container hero-inner">
@@ -42,11 +58,18 @@
     inset: 0;
     z-index: 0;
   }
-  .hero-media img {
+  .hero-media .slide {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center 30%;
+    opacity: 0;
+    transition: opacity 1.4s ease-in-out;
+  }
+  .hero-media .slide.is-active {
+    opacity: 1;
   }
   .overlay {
     position: absolute;
@@ -131,3 +154,18 @@
     50% { transform: translate(-50%, 6px); }
   }
 </style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('.hero-media[data-slideshow]');
+  if (root) {
+    const slides = Array.from(root.querySelectorAll<HTMLImageElement>('.slide'));
+    if (slides.length > 1 && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      let i = 0;
+      setInterval(() => {
+        slides[i].classList.remove('is-active');
+        i = (i + 1) % slides.length;
+        slides[i].classList.add('is-active');
+      }, 5000);
+    }
+  }
+</script>

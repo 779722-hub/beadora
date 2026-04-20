@@ -4,19 +4,19 @@ const cards = [
     href: '/quiz?by=zodiac',
     title: 'По знаку Зодиака',
     text: 'Подбор камня и украшения по вашему астрологическому знаку',
-    icon: '♐',
+    icon: 'zodiac',
   },
   {
     href: '/quiz?by=birthday',
     title: 'По дате рождения',
     text: 'Личный талисман по числам рождения — матрица судьбы',
-    icon: '✦',
+    icon: 'birthday',
   },
   {
     href: '/quiz?by=mood',
     title: 'По настроению',
     text: 'Что нужно сейчас — гармония, сила, любовь или защита?',
-    icon: '❤',
+    icon: 'mood',
   },
 ];
 ---
@@ -25,7 +25,27 @@ const cards = [
     <div class="cards">
       {cards.map((card) => (
         <a class="quiz-card reveal" href={card.href}>
-          <span class="icon">{card.icon}</span>
+          <span class="icon" aria-hidden="true">
+            {card.icon === 'zodiac' && (
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                <path d="M17 4l.7 1.9L19.6 6.6 17.7 7.3 17 9.2l-.7-1.9L14.4 6.6l1.9-.7L17 4z" fill="currentColor" />
+              </svg>
+            )}
+            {card.icon === 'birthday' && (
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="5" width="18" height="16" rx="2" />
+                <line x1="3" y1="10" x2="21" y2="10" />
+                <line x1="8" y1="3" x2="8" y2="7" />
+                <line x1="16" y1="3" x2="16" y2="7" />
+              </svg>
+            )}
+            {card.icon === 'mood' && (
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+              </svg>
+            )}
+          </span>
           <h3>{card.title}</h3>
           <p>{card.text}</p>
           <span class="cta">Подобрать <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
@@ -78,7 +98,6 @@ const cards = [
     opacity: 0.2;
   }
   .icon {
-    font-family: 'Playfair Display', serif;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -87,8 +106,11 @@ const cards = [
     border-radius: 14px;
     background: var(--accent);
     color: var(--accent-contrast);
-    font-size: 1.75rem;
     margin-bottom: 1.25rem;
+  }
+  .icon svg {
+    width: 28px;
+    height: 28px;
   }
   h3 {
     margin: 0 0 0.5rem;

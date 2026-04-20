@@ -10,7 +10,7 @@ const heroStones = STONES.filter((s) =>
     <div class="stones-grid">
       {heroStones.map((stone) => (
         <a class="stone-card reveal" href={`/stones/${stone.slug}`}>
-          <span class="swatch" style={`--stone-color: ${stone.color}`}></span>
+          <img class="stone-photo" src={`/images/stones/${stone.slug}.jpg`} alt={stone.title} width="96" height="96" loading="lazy" />
           <div class="info">
             <h3>{stone.title}</h3>
             <p>{stone.short}</p>
@@ -52,14 +52,13 @@ const heroStones = STONES.filter((s) =>
     transform: translateX(2px);
     color: var(--text);
   }
-  .swatch {
+  .stone-photo {
     display: block;
-    width: 56px;
-    height: 56px;
+    width: 64px;
+    height: 64px;
     border-radius: 14px;
-    background: var(--stone-color);
-    box-shadow: inset 0 -8px 16px rgba(0, 0, 0, 0.25), inset 0 8px 16px rgba(255, 255, 255, 0.2);
-    border: 2px solid var(--border);
+    object-fit: cover;
+    border: 1px solid var(--border);
   }
   .info h3 {
     margin: 0 0 0.125rem;
