@@ -1,27 +1,96 @@
 ---
 const images = [
-  { src: '/images/lookbook/01.jpg', alt: 'Фиолетовый браслет на модели' },
-  { src: '/images/lookbook/02.jpg', alt: 'Серьги и ожерелье с жемчугом' },
-  { src: '/images/lookbook/03.jpg', alt: 'Украшения на тёмном фоне' },
-  { src: '/images/lookbook/04.jpg', alt: 'Ожерелье крупным планом' },
-  { src: '/images/lookbook/05.jpg', alt: 'Мастерская Beadora' },
-  { src: '/images/lookbook/06.jpg', alt: 'Браслеты на деревянной поверхности' },
-  { src: '/images/lookbook/07.jpg', alt: 'Казахская модель в браслете' },
-  { src: '/images/lookbook/08.jpg', alt: 'Разноцветные браслеты' },
-  { src: '/images/lookbook/09.jpg', alt: 'Серьги крупным планом' },
+  { src: '/images/lookbook/01.jpg', alt: 'Ожерелье Beadora на манекене в классическом интерьере' },
+  { src: '/images/lookbook/02.jpg', alt: 'Модель в зелёном платье с колье из лазурита и розового кварца' },
+  { src: '/images/lookbook/03.jpg', alt: 'Ожерелье Beadora в вечернем образе' },
+  { src: '/images/lookbook/04.jpg', alt: 'Жемчужный браслет Beadora крупным планом' },
+  { src: '/images/lookbook/05.jpg', alt: 'Модель с жемчужным браслетом в гостиной' },
+  { src: '/images/lookbook/06.jpg', alt: 'Жемчужный браслет Beadora на руке' },
+  { src: '/images/lookbook/07.jpg', alt: 'Серьги Beadora с хрустальными подвесками при свечах' },
+  { src: '/images/lookbook/08.jpg', alt: 'Браслет Beadora из аметиста и чёрного агата на бархате' },
+  { src: '/images/lookbook/09.jpg', alt: 'Украшение Beadora крупным планом' },
 ];
 ---
 <section class="lookbook">
   <div class="container">
     <div class="masonry">
       {images.map((img, i) => (
-        <figure class={`item span-${(i % 5) + 1}`}>
+        <button type="button" class={`item span-${(i % 5) + 1}`} data-index={i} aria-label={`Открыть фото: ${img.alt}`}>
           <img src={img.src} alt={img.alt} loading="lazy" />
-        </figure>
+        </button>
       ))}
     </div>
   </div>
+
+  <div class="lightbox" id="lookbookLightbox" role="dialog" aria-modal="true" aria-label="Галерея лукбука" hidden>
+    <button class="lb-close" type="button" aria-label="Закрыть галерею">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <button class="lb-nav lb-prev" type="button" aria-label="Предыдущее фото">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <figure class="lb-figure">
+      <img id="lookbookImg" src="" alt="" />
+      <figcaption id="lookbookCaption"></figcaption>
+    </figure>
+    <button class="lb-nav lb-next" type="button" aria-label="Следующее фото">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+    <div class="lb-counter" id="lookbookCounter"></div>
+  </div>
 </section>
+
+<script define:vars={{ images }}>
+  const dialog = document.getElementById('lookbookLightbox');
+  const imgEl = document.getElementById('lookbookImg');
+  const capEl = document.getElementById('lookbookCaption');
+  const cntEl = document.getElementById('lookbookCounter');
+  let idx = 0;
+
+  function render() {
+    const it = images[idx];
+    imgEl.src = it.src;
+    imgEl.alt = it.alt;
+    capEl.textContent = it.alt;
+    cntEl.textContent = `${idx + 1} / ${images.length}`;
+  }
+  function open(i) {
+    idx = i;
+    render();
+    dialog.removeAttribute('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+  function close() {
+    dialog.setAttribute('hidden', '');
+    document.body.style.overflow = '';
+  }
+  function next() { idx = (idx + 1) % images.length; render(); }
+  function prev() { idx = (idx - 1 + images.length) % images.length; render(); }
+
+  document.querySelectorAll('.lookbook .item').forEach((el) => {
+    el.addEventListener('click', () => open(Number(el.dataset.index)));
+  });
+  dialog.querySelector('.lb-close').addEventListener('click', close);
+  dialog.querySelector('.lb-next').addEventListener('click', next);
+  dialog.querySelector('.lb-prev').addEventListener('click', prev);
+  dialog.addEventListener('click', (e) => {
+    if (e.target === dialog) close();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (dialog.hasAttribute('hidden')) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowRight') next();
+    if (e.key === 'ArrowLeft') prev();
+  });
+
+  // Swipe on touch
+  let tX = 0;
+  dialog.addEventListener('touchstart', (e) => { tX = e.touches[0].clientX; }, { passive: true });
+  dialog.addEventListener('touchend', (e) => {
+    const dx = e.changedTouches[0].clientX - tX;
+    if (Math.abs(dx) > 40) dx > 0 ? prev() : next();
+  });
+</script>
 
 <style>
   .masonry {
@@ -31,15 +100,19 @@ const images = [
     gap: 1rem;
   }
   .item {
+    all: unset;
+    cursor: zoom-in;
     margin: 0;
     border-radius: 16px;
     overflow: hidden;
     background: var(--surface);
     border: 1px solid var(--border);
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: block;
   }
   .item:hover {
     transform: scale(1.02);
+    box-shadow: 0 8px 24px color-mix(in srgb, var(--accent) 12%, transparent);
   }
   .item img {
     width: 100%;
@@ -47,8 +120,100 @@ const images = [
     object-fit: cover;
     aspect-ratio: 4 / 5;
     transition: transform 0.5s ease;
+    display: block;
   }
   .span-2 img { aspect-ratio: 4 / 6; }
   .span-3 img { aspect-ratio: 1 / 1; }
   .span-5 img { aspect-ratio: 3 / 4; }
+
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.85);
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    justify-items: center;
+    padding: clamp(1rem, 4vw, 3rem);
+    backdrop-filter: blur(8px);
+    animation: lbIn 0.2s ease-out;
+  }
+  .lightbox[hidden] { display: none; }
+  @keyframes lbIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .lb-figure {
+    margin: 0;
+    max-width: min(90vw, 1100px);
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .lb-figure img {
+    max-width: 100%;
+    max-height: 80vh;
+    object-fit: contain;
+    border-radius: 10px;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+  }
+  .lb-figure figcaption {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9375rem;
+    text-align: center;
+  }
+  .lb-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    all: unset;
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+  .lb-close:hover { background: rgba(255, 255, 255, 0.2); }
+  .lb-close svg { width: 22px; height: 22px; }
+
+  .lb-nav {
+    all: unset;
+    width: 48px;
+    height: 48px;
+    border-radius: 999px;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+  .lb-nav:hover { background: rgba(255, 255, 255, 0.22); }
+  .lb-nav svg { width: 24px; height: 24px; }
+  @media (max-width: 640px) {
+    .lightbox { grid-template-columns: 1fr; grid-template-rows: auto 1fr auto; }
+    .lb-prev { order: 2; }
+    .lb-next { order: 3; }
+    .lb-figure { order: 1; grid-column: 1; }
+    .lb-figure img { max-height: 70vh; }
+  }
+
+  .lb-counter {
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.875rem;
+    letter-spacing: 0.08em;
+  }
 </style>

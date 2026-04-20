@@ -1,41 +1,108 @@
 ---
 const testimonials = [
   {
-    name: 'Алия',
-    zodiac: 'Водолей',
-    initials: 'А',
-    color: '#6b4d8f',
-    text: 'Долго искала браслет с аметистом — и нашла здесь. Камень крупный, работа аккуратная, а главное — ощущение спокойствия, когда надеваю.',
+    name: 'Айжан',
+    role: 'Астана · Водолей',
+    image: '/images/testimonials/aizhan.jpg',
+    text: 'Долго искала браслет с аметистом, и у Beadora нашла именно свой. Камень крупный, работа аккуратная — надеваю и чувствую спокойствие.',
   },
   {
-    name: 'Жанна',
-    zodiac: 'Лев',
-    initials: 'Ж',
-    color: '#e8b94a',
-    text: 'Взяла цитрин в подарок коллеге, а потом купила себе «Мандариновый свет». Настроение реально поднимается. И прекрасно сидит на запястье.',
+    name: 'Аймагуль',
+    role: 'Актобе · Дева',
+    image: '/images/testimonials/aimagul.jpg',
+    text: 'Купила комплект с лазуритом на юбилей маме. Она в восторге, говорит — будто оберег носит. Упаковка тоже очень достойная, не стыдно подарить.',
   },
   {
-    name: 'Мадина',
-    zodiac: 'Рак',
-    initials: 'М',
-    color: '#d8d4cc',
-    text: 'Серьги с лунным камнем — то, что я давно искала. Переливы как живые. Упаковка отдельное удовольствие: все камни в своих мешочках с описанием.',
+    name: 'Гульмира',
+    role: 'Алматы · Лев',
+    image: '/images/testimonials/gulmira.jpg',
+    text: 'Цитриновый браслет — моя любимая покупка года. Настроение реально поднимается, а к деловым костюмам подходит идеально. Спасибо мастеру!',
+  },
+  {
+    name: 'Гульсара',
+    role: 'Караганда · Рак',
+    image: '/images/testimonials/gulsara.jpg',
+    text: 'Серьги с лунным камнем — то, что я давно искала. Переливы как живые, а в ушах невесомые. Носила на свадьбу подруги — все спрашивали, где брала.',
+  },
+  {
+    name: 'Жанар',
+    role: 'Астана · Скорпион',
+    image: '/images/testimonials/zhanar.jpg',
+    text: 'Заказывала браслет с обсидианом и гематитом — нужен был именно такой, «заземляющий». Пришло за два дня, помогли подобрать размер в WhatsApp. Всё идеально.',
+  },
+  {
+    name: 'Наталья',
+    role: 'Петропавловск · Телец',
+    image: '/images/testimonials/natalya.jpg',
+    text: 'Розовый кварц — это моя любовь. Купила браслет и серьги в комплекте, ношу почти каждый день. Камни тёплые, настроение становится мягче.',
+  },
+  {
+    name: 'Нургуля',
+    role: 'Шымкент · Близнецы',
+    image: '/images/testimonials/nurgulya.jpg',
+    text: 'Купила «Золотые нити судьбы» себе ко дню рождения. Тигровый глаз смотрится благородно, и действительно чувствуется какой-то внутренний стержень.',
+  },
+  {
+    name: 'Ольга',
+    role: 'Астана · Весы',
+    image: '/images/testimonials/olga.jpg',
+    text: 'Брала жемчужный браслет к вечернему платью — получилось очень элегантно. Качество сборки на высоте, ни одна бусина не «ходит». Буду заказывать ещё.',
+  },
+  {
+    name: 'Полина',
+    role: 'Костанай · Рыбы',
+    image: '/images/testimonials/polina.jpg',
+    text: 'Прошла квиз по зодиаку и выбрала лабрадорит — и не пожалела ни разу. Камень с переливами, как северное сияние. Консультанты отвечают мгновенно.',
+  },
+  {
+    name: 'Салтанат',
+    role: 'Астана · Козерог',
+    image: '/images/testimonials/saltanat.jpg',
+    text: 'Заказывала украшения мужу в подарок и себе одновременно. Красиво упаковано, с открыткой и описанием свойств камней. Видно, что делают с душой.',
+  },
+  {
+    name: 'Сауле',
+    role: 'Павлодар · Стрелец',
+    image: '/images/testimonials/saule.jpg',
+    text: 'Браслет с лазуритом ношу уже полгода — камень не потускнел, резьба «золота» как новая. По энергетике — это правда мой камень, было трудное время, поддержал.',
+  },
+  {
+    name: 'Светлана',
+    role: 'Астана · Овен',
+    image: '/images/testimonials/svetlana.jpg',
+    text: 'Купила гранатовый браслет — в пару к помолвочному кольцу. Глубокий рубиновый цвет, камни натуральные без малейших сомнений. Мастер откликнулась моментально.',
   },
 ];
+
+const cols = [
+  testimonials.slice(0, 4),
+  testimonials.slice(4, 8),
+  testimonials.slice(8, 12),
+];
+const durations = [22, 30, 26];
 ---
 <section class="testimonials">
   <div class="container">
-    <div class="grid">
-      {testimonials.map((t) => (
-        <div class="card reveal">
-          <div class="stars" aria-label="5 из 5">★★★★★</div>
-          <p>«{t.text}»</p>
-          <div class="author">
-            <span class="avatar" style={`--avatar-color: ${t.color}`}>{t.initials}</span>
-            <div>
-              <strong>{t.name}</strong>
-              <span class="muted">{t.zodiac}</span>
-            </div>
+    <div class="columns" aria-label="Отзывы клиентов">
+      {cols.map((col, idx) => (
+        <div class={`col col-${idx}`} style={`--scroll-duration: ${durations[idx]}s`} aria-hidden={idx > 0}>
+          <div class="track">
+            {[0, 1].map((_) => (
+              <div class="track-inner">
+                {col.map((t) => (
+                  <article class="t-card">
+                    <p>«{t.text}»</p>
+                    <div class="t-author">
+                      <img src={t.image} alt={t.name} width="44" height="44" loading="lazy" />
+                      <div>
+                        <strong>{t.name}</strong>
+                        <span class="muted">{t.role}</span>
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            ))}
           </div>
         </div>
       ))}
@@ -44,57 +111,97 @@ const testimonials = [
 </section>
 
 <style>
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.25rem;
+  .testimonials {
+    position: relative;
   }
-  .card {
-    padding: 2rem;
+  .columns {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+    height: 640px;
+    overflow: hidden;
+    position: relative;
+    mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
+  }
+  @media (max-width: 900px) {
+    .columns {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      height: 560px;
+    }
+    .col-2 { display: none; }
+  }
+  @media (max-width: 560px) {
+    .columns {
+      grid-template-columns: 1fr;
+      height: 520px;
+    }
+    .col-1 { display: none; }
+  }
+
+  .col {
+    overflow: hidden;
+  }
+  .track {
+    animation: scrollUp var(--scroll-duration, 24s) linear infinite;
+    display: flex;
+    flex-direction: column;
+  }
+  .col:nth-child(2) .track { animation-direction: reverse; }
+  .track-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding-bottom: 1.25rem;
+  }
+  @keyframes scrollUp {
+    from { transform: translateY(0); }
+    to { transform: translateY(-50%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .track { animation: none; }
+  }
+
+  .t-card {
+    padding: 1.75rem;
+    border-radius: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 16px color-mix(in srgb, var(--accent) 8%, transparent);
     display: flex;
     flex-direction: column;
     gap: 1rem;
   }
-  .stars {
-    color: var(--accent);
-    font-size: 1.125rem;
-    letter-spacing: 0.1em;
-  }
-  .card p {
+  .t-card p {
     margin: 0;
     color: var(--text);
-    font-size: 1rem;
-    line-height: 1.65;
     font-family: 'Cormorant Garamond', Georgia, serif;
     font-style: italic;
-    font-size: 1.25rem;
+    font-size: 1.0625rem;
+    line-height: 1.55;
   }
-  .author {
+  .t-author {
     display: flex;
-    gap: 0.875rem;
     align-items: center;
+    gap: 0.75rem;
     margin-top: auto;
   }
-  .avatar {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+  .t-author img {
     width: 44px;
     height: 44px;
     border-radius: 999px;
-    background: var(--avatar-color);
-    color: #1a1a1a;
-    font-weight: 700;
-    font-family: 'Playfair Display', serif;
-    font-size: 1.25rem;
-    border: 2px solid var(--border);
+    object-fit: cover;
+    border: 1px solid var(--border);
   }
-  .author strong {
+  .t-author strong {
     display: block;
     font-family: 'Manrope', sans-serif;
+    font-size: 0.9375rem;
     color: var(--text);
+    line-height: 1.2;
   }
-  .author .muted {
-    font-size: 0.875rem;
+  .t-author .muted {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
   }
 </style>
