@@ -62,7 +62,7 @@ const categories = [
       {ZODIAC.map((z) => (
         <label class="zodiac-btn" title={z.title}>
           <input type="checkbox" data-filter="zodiac" value={z.slug} />
-          <span class="sym">{z.symbol}</span>
+          <span class="sym" aria-hidden="true">{z.symbol}{'\uFE0E'}</span>
           <span class="name">{z.title}</span>
         </label>
       ))}
@@ -234,7 +234,12 @@ const categories = [
   }
   .zodiac-btn .sym {
     font-size: 1.125rem;
-    font-family: 'Playfair Display', serif;
+    font-family: 'Playfair Display', 'Times New Roman', serif;
+    font-variant-emoji: text;
+    color: var(--accent);
+  }
+  .zodiac-btn:has(input:checked) .sym {
+    color: var(--accent-contrast);
   }
   .zodiac-btn .name {
     font-size: 0.6875rem;

@@ -24,9 +24,7 @@ import { STONES } from '../../lib/data';
       <div class="grid">
         {STONES.map((s) => (
           <a class="stone-tile" href={`/stones/${s.slug}`}>
-            <div class="swatch" style={`--stone-color: ${s.color}`}>
-              <span class="symbol">◆</span>
-            </div>
+            <img class="photo" src={`/images/stones/${s.slug}.jpg`} alt={s.title} width="320" height="220" loading="lazy" />
             <h3>{s.title}</h3>
             <p class="short">{s.short}</p>
             <p class="props">
@@ -65,7 +63,7 @@ import { STONES } from '../../lib/data';
     gap: 1.25rem;
   }
   .stone-tile {
-    padding: 1.5rem;
+    padding: 0 0 1.5rem;
     border-radius: 20px;
     background: var(--surface);
     border: 1px solid var(--border);
@@ -75,24 +73,24 @@ import { STONES } from '../../lib/data';
     flex-direction: column;
     gap: 0.75rem;
     transition: transform 0.2s ease, border-color 0.2s ease;
+    overflow: hidden;
   }
   .stone-tile:hover {
     transform: translateY(-4px);
     border-color: var(--accent);
     color: var(--text);
   }
-  .swatch {
-    width: 72px;
-    height: 72px;
-    border-radius: 16px;
-    background: var(--stone-color);
-    box-shadow: inset 0 -8px 16px rgba(0, 0, 0, 0.25), inset 0 8px 16px rgba(255, 255, 255, 0.2);
-    border: 2px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: rgba(255, 255, 255, 0.4);
-    font-size: 1.25rem;
+  .stone-tile .photo {
+    display: block;
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-bottom: 1px solid var(--border);
+  }
+  .stone-tile h3,
+  .stone-tile .short,
+  .stone-tile .props {
+    padding-inline: 1.5rem;
   }
   h3 {
     margin: 0;

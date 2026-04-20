@@ -5,8 +5,8 @@ const year = new Date().getFullYear();
   <div class="container footer-inner">
     <div class="col brand">
       <a href="/" class="logo" aria-label="Beadora.kz — на главную">
-        <img class="logo-light" src="/images/logo-full.png" alt="Beadora.kz" width="160" height="135" loading="lazy" />
-        <img class="logo-dark" src="/images/logo-full-dark.png" alt="Beadora.kz" width="160" height="135" loading="lazy" />
+        <img class="logo-mark" src="/images/logo-mark.png" alt="" aria-hidden="true" width="72" height="88" loading="lazy" />
+        <span class="logo-text">BEADORA<span class="logo-kz">.kz</span></span>
       </a>
       <p class="muted">
         Авторские украшения из натуральных камней в Казахстане. Ручная работа, подбор по зодиаку, доставка по Астане и всему Казахстану.
@@ -89,16 +89,27 @@ const year = new Date().getFullYear();
   }
 
   .logo {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--text);
+    text-decoration: none;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
   }
-  .logo img {
-    height: 96px;
+  .logo-mark {
+    height: 56px;
     width: auto;
     display: block;
   }
-  :root[data-theme='light'] .logo .logo-dark,
-  :root[data-theme='dark'] .logo .logo-light {
-    display: none;
+  .logo-text {
+    font-size: 1.5rem;
+    letter-spacing: 0.08em;
+  }
+  .logo-kz {
+    color: var(--accent);
+    font-weight: 400;
+    font-size: 0.875em;
   }
 
   .brand p {
