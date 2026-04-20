@@ -9,6 +9,7 @@ const images = [
   { src: '/images/lookbook/07.jpg', alt: 'Серьги Beadora с хрустальными подвесками при свечах' },
   { src: '/images/lookbook/08.jpg', alt: 'Браслет Beadora из аметиста и чёрного агата на бархате' },
   { src: '/images/lookbook/09.jpg', alt: 'Украшение Beadora крупным планом' },
+  { src: '/images/lookbook/10.jpg', alt: 'Модель в вечернем образе с серьгами Beadora из хрустальных подвесок' },
 ];
 ---
 <section class="lookbook">
@@ -131,10 +132,9 @@ const images = [
     inset: 0;
     z-index: 1000;
     background: rgba(0, 0, 0, 0.85);
-    display: grid;
-    grid-template-columns: auto 1fr auto;
+    display: flex;
     align-items: center;
-    justify-items: center;
+    justify-content: center;
     padding: clamp(1rem, 4vw, 3rem);
     backdrop-filter: blur(8px);
     animation: lbIn 0.2s ease-out;
