@@ -1,8 +1,25 @@
 ---
 import Base from '../layouts/Base.astro';
 import ContactsBlock from '../components/home/ContactsBlock.astro';
+import { breadcrumbListJsonLd, localBusinessJsonLd } from '../lib/seo';
+
+const siteOrigin = (Astro.site ?? new URL('https://beadora.kz/')).origin;
+const breadcrumb = breadcrumbListJsonLd(
+  [
+    { name: 'Главная', url: '/' },
+    { name: 'Контакты', url: '/contacts' },
+  ],
+  siteOrigin,
+);
+const localBusiness = localBusinessJsonLd(siteOrigin);
 ---
-<Base title="Контакты Beadora.kz — Астана, Брусиловского 5" description="Адрес магазина, карта, телефон и мессенджеры Beadora. Как добраться и режим работы.">
+<Base
+  title="Контакты Beadora.kz — Астана, Брусиловского 5"
+  description="Адрес магазина «ADORA» в Астане на Брусиловского 5, карта проезда, телефон +7 778 780-65-40, WhatsApp, Instagram и режим работы ежедневно 10:00–20:00."
+>
+  <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumb)} />
+  <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(localBusiness)} />
+
   <section class="contacts-hero">
     <div class="container container-narrow">
       <nav class="crumbs">

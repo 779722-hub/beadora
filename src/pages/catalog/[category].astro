@@ -2,6 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import ProductCard from '../../components/product/ProductCard.astro';
 import { PRODUCTS, CATEGORIES } from '../../lib/data';
+import { breadcrumbListJsonLd } from '../../lib/seo';
 import type { GetStaticPaths } from 'astro';
 
 export const getStaticPaths: GetStaticPaths = () => {
@@ -20,11 +21,22 @@ const categoryMap: Record<string, string> = {
 };
 const filter = categoryMap[category.slug];
 const items = PRODUCTS.filter((p) => p.category === filter);
+
+const siteOrigin = (Astro.site ?? new URL('https://beadora.kz/')).origin;
+const breadcrumb = breadcrumbListJsonLd(
+  [
+    { name: 'Главная', url: '/' },
+    { name: 'Каталог', url: '/catalog' },
+    { name: category.title, url: `/catalog/${category.slug}` },
+  ],
+  siteOrigin,
+);
 ---
 <Base
   title={`${category.title} — Beadora.kz`}
   description={category.description}
 >
+  <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumb)} />
   <section class="cat-hero">
     <div class="container">
       <nav class="crumbs">

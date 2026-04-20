@@ -22,6 +22,7 @@ import { PRODUCTS } from '../lib/data';
     set:html={JSON.stringify(
       PRODUCTS.map((p) => ({
         sku: p.sku,
+        slug: p.slug,
         name: p.name,
         categoryTitle: p.categoryTitle,
         price: p.price,
@@ -60,6 +61,7 @@ import { PRODUCTS } from '../lib/data';
 
   interface Lite {
     sku: string;
+    slug: string;
     name: string;
     categoryTitle: string;
     price: number;
@@ -89,12 +91,12 @@ import { PRODUCTS } from '../lib/data';
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.25rem;">
         ${items.map((p) => `
           <article style="background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;">
-            <a href="/product/${p.sku}" style="display:block;aspect-ratio:1/1;overflow:hidden;">
+            <a href="/product/${p.sku}-${p.slug}" style="display:block;aspect-ratio:1/1;overflow:hidden;">
               <img src="${p.image}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;" loading="lazy" />
             </a>
             <div style="padding:1rem;display:flex;flex-direction:column;gap:0.375rem;">
               <span style="font-size:0.75rem;color:var(--text-subtle);letter-spacing:0.08em;text-transform:uppercase;">Арт. ${p.sku}</span>
-              <a href="/product/${p.sku}" style="color:var(--text);text-decoration:none;">
+              <a href="/product/${p.sku}-${p.slug}" style="color:var(--text);text-decoration:none;">
                 <strong style="font-family:'Playfair Display',serif;font-size:1.0625rem;">${p.categoryTitle} «${p.name}»</strong>
               </a>
               <span style="color:var(--accent);font-weight:700;font-family:'Playfair Display',serif;font-size:1.125rem;">${formatPrice(p.price)}</span>

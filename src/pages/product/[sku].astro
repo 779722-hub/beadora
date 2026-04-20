@@ -3,11 +3,12 @@ import Base from '../../layouts/Base.astro';
 import ProductCard from '../../components/product/ProductCard.astro';
 import { PRODUCTS, stoneBySlug, zodiacBySlug, similarProducts, formatPrice } from '../../lib/data';
 import { buildWhatsAppLink, buildProductInquiry } from '../../lib/whatsapp';
+import { breadcrumbListJsonLd } from '../../lib/seo';
 import type { GetStaticPaths } from 'astro';
 
 export const getStaticPaths: GetStaticPaths = () => {
   return PRODUCTS.map((p) => ({
-    params: { sku: p.sku },
+    params: { sku: `${p.sku}-${p.slug}` },
     props: { product: p },
   }));
 };
@@ -16,13 +17,21 @@ const { product } = Astro.props;
 const similar = similarProducts(product.sku, 4);
 const waLink = buildWhatsAppLink(buildProductInquiry(product.sku, product.name, product.price));
 
+const siteOrigin = (Astro.site ?? new URL('https://beadora.kz/')).origin;
+const productPath = `/product/${product.sku}-${product.slug}`;
+const categorySlug =
+  product.category === 'bracelet' ? 'bracelets'
+  : product.category === 'necklace' ? 'necklaces'
+  : product.category === 'set' ? 'sets'
+  : 'earrings';
+
 const productJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Product',
   sku: product.sku,
   name: `${product.categoryTitle} «${product.name}»`,
   description: product.description,
-  image: product.images.map((i) => new URL(i, 'https://beadora.kz').toString()),
+  image: product.images.map((i) => new URL(i, siteOrigin).toString()),
   brand: { '@type': 'Brand', name: 'Beadora' },
   offers: {
     '@type': 'Offer',
@@ -31,35 +40,60 @@ const productJsonLd = {
     availability: product.available
       ? 'https://schema.org/InStock'
       : 'https://schema.org/OutOfStock',
-    url: new URL(`/product/${product.sku}`, 'https://beadora.kz').toString(),
+    url: new URL(productPath, siteOrigin).toString(),
   },
 };
+
+const breadcrumb = breadcrumbListJsonLd(
+  [
+    { name: 'Главная', url: '/' },
+    { name: 'Каталог', url: '/catalog' },
+    { name: product.categoryTitle, url: `/catalog/${categorySlug}` },
+    { name: `«${product.name}»`, url: productPath },
+  ],
+  siteOrigin,
+);
 ---
 <Base
   title={`${product.categoryTitle} «${product.name}» — арт. ${product.sku} · Beadora.kz`}
   description={product.description || `${product.categoryTitle} «${product.name}» из натуральных камней. Артикул ${product.sku}, цена ${formatPrice(product.price)}.`}
   image={product.images[0]}
 >
-  <script slot="head" type="application/ld+json" set:html={JSON.stringify(productJsonLd)} />
+  <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(productJsonLd)} />
+  <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumb)} />
 
   <section class="product">
     <div class="container">
-      <nav class="crumbs">
+      <nav class="crumbs" aria-label="Хлебные крошки">
         <a href="/">Главная</a> / <a href="/catalog">Каталог</a> /
-        <a href={`/catalog/${product.category === 'bracelet' ? 'bracelets' : product.category === 'necklace' ? 'necklaces' : product.category === 'set' ? 'sets' : 'earrings'}`}>{product.categoryTitle}</a> /
+        <a href={`/catalog/${categorySlug}`}>{product.categoryTitle}</a> /
         <span>«{product.name}»</span>
       </nav>
 
       <div class="layout">
         <div class="gallery">
           <div class="main-image">
-            <img id="galleryMain" src={product.images[0]} alt={`${product.categoryTitle} «${product.name}»`} />
+            <img
+              id="galleryMain"
+              src={product.images[0]}
+              alt={`${product.categoryTitle} «${product.name}» из натуральных камней`}
+              loading="eager"
+              fetchpriority="high"
+              width="600"
+              height="600"
+            />
           </div>
           {product.images.length > 1 && (
             <div class="thumbs">
               {product.images.map((src, i) => (
-                <button type="button" class="thumb" data-src={src}>
-                  <img src={src} alt={`Фото ${i + 1}`} loading="lazy" />
+                <button type="button" class="thumb" data-src={src} aria-label={`Показать фото ${i + 1}`}>
+                  <img
+                    src={src}
+                    alt={`${product.categoryTitle} «${product.name}» — вид ${i + 1}`}
+                    loading="lazy"
+                    width="80"
+                    height="80"
+                  />
                 </button>
               ))}
             </div>

@@ -6,13 +6,14 @@ export interface Props {
   product: Product;
 }
 const { product } = Astro.props;
-const href = `/product/${product.sku}`;
+const href = `/product/${product.sku}-${product.slug}`;
 const img = product.images[0];
+const altText = `${product.categoryTitle} «${product.name}» — ${stoneTitles(product.stones)}`;
 ---
 <article class="product-card card" data-sku={product.sku}>
   <a href={href} class="media" aria-label={`${product.categoryTitle} «${product.name}»`}>
     {product.new && <span class="ribbon">Новинка</span>}
-    <img src={img} alt={`${product.categoryTitle} «${product.name}»`} loading="lazy" />
+    <img src={img} alt={altText} loading="lazy" width="400" height="400" />
   </a>
   <div class="body">
     <div class="meta">

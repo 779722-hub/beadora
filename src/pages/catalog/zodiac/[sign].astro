@@ -2,6 +2,7 @@
 import Base from '../../../layouts/Base.astro';
 import ProductCard from '../../../components/product/ProductCard.astro';
 import { ZODIAC, STONES, productsByZodiac, stoneBySlug } from '../../../lib/data';
+import { breadcrumbListJsonLd } from '../../../lib/seo';
 import type { GetStaticPaths } from 'astro';
 
 export const getStaticPaths: GetStaticPaths = () => {
@@ -14,11 +15,22 @@ export const getStaticPaths: GetStaticPaths = () => {
 const { sign } = Astro.props;
 const products = productsByZodiac(sign.slug);
 const recommendedStones = sign.recommended_stones.map((s) => stoneBySlug(s)).filter(Boolean);
+
+const siteOrigin = (Astro.site ?? new URL('https://beadora.kz/')).origin;
+const breadcrumb = breadcrumbListJsonLd(
+  [
+    { name: 'Главная', url: '/' },
+    { name: 'Каталог', url: '/catalog' },
+    { name: `Знак ${sign.title}`, url: `/catalog/zodiac/${sign.slug}` },
+  ],
+  siteOrigin,
+);
 ---
 <Base
   title={`Украшения для знака ${sign.title} — Beadora.kz`}
   description={`Подборка украшений из натуральных камней для знака ${sign.title} (${sign.dates}). Камни-талисманы, свойства, рекомендации.`}
 >
+  <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumb)} />
   <section class="zodiac-hero">
     <div class="container">
       <nav class="crumbs">

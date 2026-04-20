@@ -1,8 +1,22 @@
 ---
 import Base from '../layouts/Base.astro';
 import VideoBlock from '../components/home/VideoBlock.astro';
+import { breadcrumbListJsonLd } from '../lib/seo';
+
+const siteOrigin = (Astro.site ?? new URL('https://beadora.kz/')).origin;
+const breadcrumb = breadcrumbListJsonLd(
+  [
+    { name: 'Главная', url: '/' },
+    { name: 'О бренде', url: '/about' },
+  ],
+  siteOrigin,
+);
 ---
-<Base title="О бренде Beadora.kz" description="История мастерской Beadora: авторские украшения из натуральных камней в Астане.">
+<Base
+  title="О бренде Beadora — авторские украшения из натуральных камней в Астане"
+  description="История мастерской Beadora в Астане: с 2020 года создаём браслеты, серьги и ожерелья из натуральных камней ручной работы. 15+ минералов, подбор по зодиаку, гарантия подлинности."
+>
+  <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumb)} />
   <section class="about-hero">
     <div class="container container-narrow">
       <nav class="crumbs">

@@ -1,4 +1,27 @@
 User-agent: *
 Allow: /
 
+# Не индексируем клиентские страницы (корзина, избранное, 404)
+Disallow: /cart
+Disallow: /favorites
+Disallow: /404
+
+# Не плодим дубликаты из фильтров каталога
+Disallow: /*?cat=
+Disallow: /*?stone=
+Disallow: /*?zodiac=
+Disallow: /*?pmin=
+Disallow: /*?pmax=
+Disallow: /*?sort=
+Disallow: /*?new=
+Disallow: /*?q=
+
+# Яндекс любит отдельную секцию
+User-agent: Yandex
+Allow: /
+Disallow: /cart
+Disallow: /favorites
+Disallow: /404
+Clean-param: cat&stone&zodiac&pmin&pmax&sort&new&q
+
 Sitemap: https://beadora.kz/sitemap-index.xml

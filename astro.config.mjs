@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://beadora.kz',
   output: 'static',
-  trailingSlash: 'ignore',
+  trailingSlash: 'never',
   build: {
     assets: 'assets',
     format: 'directory',

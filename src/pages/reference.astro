@@ -1,10 +1,21 @@
 ---
 import Base from '../layouts/Base.astro';
+import { breadcrumbListJsonLd } from '../lib/seo';
+
+const siteOrigin = (Astro.site ?? new URL('https://beadora.kz/')).origin;
+const breadcrumb = breadcrumbListJsonLd(
+  [
+    { name: 'Главная', url: '/' },
+    { name: 'Как отличить натуральные камни', url: '/reference' },
+  ],
+  siteOrigin,
+);
 ---
 <Base
   title="Как отличить натуральные камни от подделок — Beadora.kz"
   description="Профессиональное руководство: 5 простых тестов для проверки подлинности натуральных камней дома."
 >
+  <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumb)} />
   <section class="ref-hero">
     <div class="container container-narrow">
       <nav class="crumbs">

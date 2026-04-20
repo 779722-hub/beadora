@@ -1,5 +1,6 @@
 ---
 import Accordion from '../ui/Accordion.astro';
+import { faqPageJsonLd } from '../../lib/seo';
 
 const faq = [
   {
@@ -27,12 +28,15 @@ const faq = [
     a: 'В течение 7 дней мы принимаем обмен и возврат украшения, если оно не подошло по размеру или цвету. Украшение должно быть в оригинальной упаковке и без следов носки.',
   },
 ];
+
+const faqLd = faqPageJsonLd(faq);
 ---
 <section class="faq-block">
   <div class="container container-narrow">
     <Accordion items={faq} />
   </div>
 </section>
+<script type="application/ld+json" is:inline set:html={JSON.stringify(faqLd)} />
 
 <style>
   .faq-block {
