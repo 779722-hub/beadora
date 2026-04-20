@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1d1a15"/>
+      <stop offset="1" stop-color="#0a0907"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#bg)"/>
+  <g transform="translate(200 200)" fill="none" stroke="#d4af37" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.6">
+    <circle r="48"/>
+    <circle r="22" cy="-34" fill="#d4af37" stroke="none" opacity="0.25"/>
+    <circle r="22" cy="34" fill="#d4af37" stroke="none" opacity="0.25"/>
+    <circle r="22" cx="34" fill="#d4af37" stroke="none" opacity="0.25"/>
+    <circle r="22" cx="-34" fill="#d4af37" stroke="none" opacity="0.25"/>
+  </g>
+  <text x="200" y="290" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-size="16" fill="#b8a989" letter-spacing="2">BEADORA</text>
+  <text x="200" y="312" text-anchor="middle" font-family="Manrope, sans-serif" font-size="11" fill="#8a7c64" letter-spacing="1">Фото скоро будет</text>
+</svg>
