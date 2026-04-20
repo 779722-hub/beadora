@@ -89,7 +89,7 @@ export function localBusinessJsonLd(siteOrigin: string) {
       {
         '@type': 'OpeningHoursSpecification',
         dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-        opens: '10:00',
+        opens: '11:00',
         closes: '20:00',
       },
     ],

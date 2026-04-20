@@ -19,7 +19,10 @@
           <div class="row">
             <div class="label">Телефон</div>
             <div class="value">
-              <a href="tel:+77787806540">+7 (778) 780-65-40</a>
+              <a href="tel:+77787806540" class="call-btn" aria-label="Позвонить в Beadora">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                Позвонить нам
+              </a>
             </div>
           </div>
           <div class="row">
@@ -31,7 +34,7 @@
           </div>
           <div class="row">
             <div class="label">Часы работы</div>
-            <div class="value">Ежедневно, 10:00 – 20:00 (Астана)</div>
+            <div class="value">Ежедневно, 11:00 – 20:00 (Астана)</div>
           </div>
         </div>
       </div>
@@ -104,6 +107,29 @@
   }
   .value a {
     color: var(--accent);
+  }
+  .call-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.125rem;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #e9c185 0%, #c9985a 45%, #a87434 100%);
+    color: #fff !important;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    text-decoration: none;
+    box-shadow: 0 6px 16px color-mix(in srgb, #c9985a 35%, transparent);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .call-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 22px color-mix(in srgb, #c9985a 45%, transparent);
+  }
+  .call-btn svg {
+    width: 16px;
+    height: 16px;
   }
   .map {
     border-radius: 20px;
